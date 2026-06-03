@@ -59,6 +59,7 @@ class SearchLockerActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
                 val intent = Intent(this, RentLockerActivity::class.java)
                 intent.putExtra("LOCKER_ID", locker.lockerId)
+                intent.putExtra("AVAILABLE_SLOTS", locker.availableSlots)
                 intent.putExtra("LOCKER_ADDRESS", locker.address)
                 startActivity(intent)
             } ?: run {
@@ -127,7 +128,7 @@ class SearchLockerActivity : AppCompatActivity(), OnMapReadyCallback {
         val lockerNames = lockerList.map { 
             val shortId = if (it.lockerId.length > 4) "..${it.lockerId.takeLast(4)}" else it.lockerId
             val statusText = if (it.availableSlots > 0) " (Còn trống)" else " (Đã đầy)"
-            "Tủ $shortId$statusText"
+            "Tủ ${it.lockerId}$statusText"
         }
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, lockerNames)
         spinnerLockerList.adapter = adapter
@@ -146,13 +147,12 @@ class SearchLockerActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         for (locker in lockerList) {
-            val shortId = if (locker.lockerId.length > 4) "..${locker.lockerId.takeLast(4)}" else locker.lockerId
             val pos = LatLng(locker.latitude, locker.longitude)
             val markerColor = if (locker.availableSlots > 0) BitmapDescriptorFactory.HUE_AZURE else BitmapDescriptorFactory.HUE_RED
 
             val marker = mMap.addMarker(MarkerOptions()
                 .position(pos)
-                .title("Tủ $shortId")
+                .title("Tủ ${locker.lockerId}")
                 .snippet("Còn: ${locker.availableSlots}/${locker.totalSlots}")
                 .icon(BitmapDescriptorFactory.defaultMarker(markerColor)))
             

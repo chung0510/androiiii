@@ -54,9 +54,29 @@ class RentLockerActivity : AppCompatActivity() {
         }
 
         val spinnerType = findViewById<Spinner>(R.id.spinnerType)
-        val types = arrayOf("trong", "ngoài")
+        val spinnerSlot = findViewById<Spinner>(R.id.spinnerSlot)
+        val availableSlots =
+            intent.getIntExtra(
+                "AVAILABLE_SLOTS",
+                0
+            )
+        val prefix = currentLockerId
+        val slotList = mutableListOf<String>()
+        for(i in 1..availableSlots)
+        {
+            slotList.add(prefix + i)
+        }
+        val slotAdapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_dropdown_item,
+            slotList
+        )
+        val types = arrayOf("trong chung cư", "ngoài chung cư")
+
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, types)
         spinnerType.adapter = adapter
+        spinnerSlot.adapter = slotAdapter
+
 
         val optionHour =
             findViewById<FrameLayout>(R.id.optionHour)

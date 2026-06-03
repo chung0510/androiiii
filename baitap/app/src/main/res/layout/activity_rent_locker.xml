@@ -109,6 +109,33 @@
                 android:background="@android:color/transparent" />
         </FrameLayout>
 
+        <TextView
+            android:id="@+id/tvSlotLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ngăn còn trống"
+            android:textColor="@color/neon_blue"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/spinnerTypeCard"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/spinnerSlotCard"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/glass_background"
+            app:layout_constraintTop_toBottomOf="@id/tvSlotLabel">
+
+            <Spinner
+                android:id="@+id/spinnerSlot"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent" />
+
+        </FrameLayout>
+
         <!-- Options Cards (Hour/Day) -->
         <LinearLayout
             android:id="@+id/layoutOptions"
@@ -117,8 +144,7 @@
             android:orientation="horizontal"
             android:layout_marginTop="24dp"
             android:weightSum="2"
-            app:layout_constraintTop_toBottomOf="@id/spinnerTypeCard">
-
+            app:layout_constraintTop_toBottomOf="@id/spinnerSlotCard">
             <FrameLayout
                 android:id="@+id/optionHour"
                 android:layout_width="0dp"

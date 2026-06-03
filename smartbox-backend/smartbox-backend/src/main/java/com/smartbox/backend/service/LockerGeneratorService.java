@@ -19,7 +19,7 @@ public class LockerGeneratorService {
 
     private static final double EARTH_RADIUS = 6371000.0;
     private static final double MAX_RADIUS_METERS = 2000.0;
-    private static final int LOCKER_COUNT = 20;
+    private static final int LOCKER_COUNT = 5;
     private static final double MIN_DISTANCE_BETWEEN_LOCKERS = 100.0;
 
     private final Random random = new Random();
@@ -32,6 +32,14 @@ public class LockerGeneratorService {
 
         int maxAttempts = 2000;
         int attempts = 0;
+
+        String[] lockerNames = {
+                "A",
+                "B",
+                "C",
+                "D",
+                "E"
+        };
 
         while (lockers.size() < LOCKER_COUNT && attempts < maxAttempts) {
 
@@ -48,7 +56,20 @@ public class LockerGeneratorService {
 
             Locker locker = new Locker();
 
-            locker.setLockerId("L" + (1000 + random.nextInt(9000)));
+            locker.setLockerId(lockerNames[lockers.size()]);
+            List<String> slots = new ArrayList<>();
+
+            String prefix =
+                    lockerNames[lockers.size()];
+
+            for(int i = 1; i <= 5; i++)
+            {
+                slots.add(
+                        prefix + i
+                );
+            }
+
+            locker.setSlots(slots);
 
             locker.setLatitude(lat);
             locker.setLongitude(lng);
@@ -57,10 +78,10 @@ public class LockerGeneratorService {
 
             locker.setStatus("ACTIVE");
 
-            locker.setTotalSlots(20);
+            locker.setTotalSlots(5);
 
             locker.setAvailableSlots(
-                    5 + random.nextInt(16)
+                    1 + random.nextInt(5)
             );
 
             lockers.add(locker);
