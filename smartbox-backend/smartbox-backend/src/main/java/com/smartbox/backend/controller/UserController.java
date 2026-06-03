@@ -31,6 +31,19 @@ public class UserController {
                     "Tên đăng nhập đã tồn tại"
             );
         }
+
+        User emailExist =
+                repository.findByEmail(
+                        request.getEmail()
+                );
+
+        if(emailExist != null){
+            return new RegisterResponse(
+                    false,
+                    "Email đã tồn tại"
+            );
+        }
+
         if(request.getUsername() == null ||
                 request.getUsername().trim().isEmpty())
         {
@@ -47,6 +60,14 @@ public class UserController {
                     "Tên đăng nhập tối thiểu 4 ký tự"
             );
         }
+        if(request.getEmail() == null ||
+                request.getEmail().trim().isEmpty())
+        {
+            return new RegisterResponse(
+                    false,
+                    "Email không hợp lệ"
+            );
+        }
 
         if(request.getPassword() == null ||
                 request.getPassword().length() < 8)
@@ -54,6 +75,16 @@ public class UserController {
             return new RegisterResponse(
                     false,
                     "Mật khẩu tối thiểu 8 ký tự"
+            );
+        }
+        String password = request.getPassword();
+
+        if(!password.matches(
+                "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$"))
+        {
+            return new RegisterResponse(
+                    false,
+                    "Mật khẩu phải có chữ hoa, chữ thường và số"
             );
         }
 
@@ -66,7 +97,11 @@ public class UserController {
         user.setPassword(
                 request.getPassword()
         );
+        user.setEmail(
+                request.getEmail()
+        );
 
+        user.setRole("USER");
         repository.save(user);
 
         return new RegisterResponse(
@@ -89,6 +124,7 @@ public class UserController {
             return new LoginResponse(
                     false,
                     null,
+                    null,
                     null
             );
         }
@@ -99,6 +135,7 @@ public class UserController {
             return new LoginResponse(
                     false,
                     null,
+                    null,
                     null
             );
         }
@@ -106,7 +143,8 @@ public class UserController {
         return new LoginResponse(
                 true,
                 user.getId(),
-                user.getUsername()
+                user.getUsername(),
+                user.getRole()
         );
     }
 

@@ -52,15 +52,27 @@ class MainActivity : AppCompatActivity() {
                     val sharedPref = getSharedPreferences("USER_DATA", MODE_PRIVATE)
                     with(sharedPref.edit()) {
                         putString("USER_ID", loginResponse.userId)
+                        putString("ROLE", loginResponse.role)
                         apply()
                     }
 
                     Toast.makeText(this@MainActivity, getString(R.string.login_success), Toast.LENGTH_SHORT).show()
-                    
-                    if (username == "admin") {
-                        startActivity(Intent(this@MainActivity, AdminActivity::class.java))
+
+                    if(loginResponse.role == "ADMIN") {
+
+                        startActivity(
+                            Intent(
+                                this@MainActivity,
+                                AdminActivity::class.java
+                            )
+                        )
                     } else {
-                        startActivity(Intent(this@MainActivity, UserActivity::class.java))
+                        startActivity(
+                            Intent(
+                                this@MainActivity,
+                                UserActivity::class.java
+                            )
+                        )
                     }
                     finish()
                 } else {

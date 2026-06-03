@@ -7,15 +7,18 @@ public class LoginResponse {
     private String userId;
 
     private String username;
+    private String role;
 
     public LoginResponse(
             boolean success,
             String userId,
-            String username
+            String username,
+            String role
     ) {
         this.success = success;
         this.userId = userId;
         this.username = username;
+        this.role = role;
     }
 
     public boolean isSuccess() {
@@ -28,5 +31,9 @@ public class LoginResponse {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getRole() {
+        return role;
     }
 }

@@ -59,7 +59,8 @@ data class LoginRequest(
 data class LoginResponse(
     val success: Boolean,
     val userId: String?,
-    val username: String?
+    val username: String?,
+    val role: String?
 )
 data class User(
     val id: String?,
