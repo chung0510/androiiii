@@ -1,0 +1,65 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Timhieu" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorOnPrimary">@color/bg_dark</item>
+        <item name="colorSecondary">@color/neon_mint</item>
+        <item name="android:windowBackground">@color/bg_dark</item>
+        <item name="android:statusBarColor">@color/bg_dark</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+    </style>
+
+    <style name="Theme.Timhieu" parent="Base.Theme.Timhieu" />
+
+    <!-- Neon Button Style -->
+    <style name="NeonButtonStyle" parent="Widget.Material3.Button">
+        <item name="android:backgroundTint">@color/neon_blue</item>
+        <item name="android:textColor">@color/bg_dark</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+
+    <!-- Glass Button Style -->
+    <style name="GlassButtonStyle" parent="Widget.Material3.Button.TextButton">
+        <item name="android:background">@drawable/glass_background</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <!-- Custom Style for EditText -->
+    <style name="AppEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/glass_background</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColorHint">@color/text_hint</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:padding">12dp</item>
+    </style>
+
+    <!-- Custom Style for Title -->
+    <style name="AppTitle">
+        <item name="android:textColor">@color/neon_blue</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">@color/neon_blue_glow</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">0</item>
+        <item name="android:shadowRadius">10</item>
+    </style>
+
+    <!-- Style for Grid Buttons in Rent Locker -->
+    <style name="GridButtonStyle" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="strokeColor">@color/glass_border</item>
+    </style>
+</resources>

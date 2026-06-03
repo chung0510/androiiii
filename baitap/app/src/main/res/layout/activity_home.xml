@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <!-- ẢNH TỦ -->
+
+    <ImageView
+        android:id="@+id/imgLocker"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/welcome1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.55"/>
+
+    <View
+        android:id="@+id/bottomBg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#FAFAFA"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgLocker"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imgFade"
+        android:layout_width="0dp"
+        android:layout_height="260dp"
+        android:src="@drawable/rectangle1"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@id/imgLocker"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- TITLE -->
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chào mừng đến với tủ"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:textColor="#333333"
+        app:layout_constraintTop_toBottomOf="@id/imgLocker"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/logoSmartbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:text="Smart Loker"
+        android:textColor="#2FB24A"
+        android:textSize="42sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtTitle" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGoToLogin"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:text="Đăng nhập"
+        android:textAllCaps="false"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="32dp"
+        app:cornerRadius="28dp"
+        app:backgroundTint="#4F8F5E"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/logoSmartbox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- REGISTER -->
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGoToRegister"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:text="Đăng ký"
+        android:textAllCaps="false"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="12dp"
+        app:cornerRadius="28dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="#D6E9DA"
+        android:textColor="#4F8F5E"
+        android:backgroundTint="#EEF7F0"
+        app:layout_constraintTop_toBottomOf="@id/btnGoToLogin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

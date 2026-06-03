@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/bg_dark">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        tools:context=".RentLockerActivity">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_back"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/back_desc"
+            app:tint="@color/neon_blue"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvRentTitle"
+            style="@style/AppTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rent_locker_title"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/btnBack"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Renter Name Section -->
+        <TextView
+            android:id="@+id/tvLabelName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/renter_name"
+            android:textColor="@color/neon_blue"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/tvRentTitle"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/edtRenterName"
+            style="@style/AppEditText"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="8dp"
+            android:hint="@string/renter_name"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            app:layout_constraintTop_toBottomOf="@id/tvLabelName" />
+
+        <!-- Phone Number Section -->
+        <TextView
+            android:id="@+id/tvLabelPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/phone_number"
+            android:textColor="@color/neon_blue"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/edtRenterName"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/edtPhone"
+            style="@style/AppEditText"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="8dp"
+            android:hint="@string/phone_number"
+            android:importantForAutofill="no"
+            android:inputType="phone"
+            app:layout_constraintTop_toBottomOf="@id/tvLabelPhone" />
+
+        <!-- Locker Type Section -->
+        <TextView
+            android:id="@+id/tvLabelType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/locker_type"
+            android:textColor="@color/neon_blue"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/edtPhone"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/spinnerTypeCard"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/glass_background"
+            app:layout_constraintTop_toBottomOf="@id/tvLabelType">
+
+            <Spinner
+                android:id="@+id/spinnerType"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="12dp"
+                android:background="@android:color/transparent" />
+        </FrameLayout>
+
+        <!-- Options Cards (Hour/Day) -->
+        <LinearLayout
+            android:id="@+id/layoutOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="24dp"
+            android:weightSum="2"
+            app:layout_constraintTop_toBottomOf="@id/spinnerTypeCard">
+
+            <FrameLayout
+                android:id="@+id/optionHour"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/glass_background"
+                android:clickable="true"
+                android:focusable="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rent_by_hour"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_locker"
+                        android:layout_marginVertical="8dp"
+                        app:tint="@color/neon_blue"
+                        android:contentDescription="@null" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/price_hour"
+                        android:textColor="@color/neon_mint" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/optionDay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/glass_background"
+                android:clickable="true"
+                android:focusable="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rent_by_day"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_locker"
+                        android:layout_marginVertical="8dp"
+                        app:tint="@color/neon_blue"
+                        android:contentDescription="@null" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/price_day"
+                        android:textColor="@color/neon_mint" />
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- Dynamic Grid for selection -->
+        <FrameLayout
+            android:id="@+id/gridContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/layoutOptions">
+
+            <GridLayout
+                android:id="@+id/gridHours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="4"
+                android:visibility="gone">
+                <com.google.android.material.button.MaterialButton style="@style/GridButtonStyle" android:text="@string/hour_1" />
+                <com.google.android.material.button.MaterialButton style="@style/GridButtonStyle" android:text="@string/hour_2" />
+                <com.google.android.material.button.MaterialButton style="@style/GridButtonStyle" android:text="@string/hour_3" />
+                <com.google.android.material.button.MaterialButton style="@style/GridButtonStyle" android:text="@string/hour_4" />
+                <com.google.android.material.button.MaterialButton style="@style/GridButtonStyle" android:text="@string/hour_5" />
+                <com.google.android.material.button.MaterialButton style="@style/GridButtonStyle" android:text="@string/hour_6" />
+                <com.google.android.material.button.MaterialButton style="@style/GridButtonStyle" android:text="@string/hour_7" />
+                <com.google.android.material.button.MaterialButton style="@style/GridButtonStyle" android:text="@string/hour_8" />
+            </GridLayout>
+
+            <GridLayout
+                android:id="@+id/gridDays"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="4"
+                android:visibility="gone">
+                <com.google.android.material.button.MaterialButton style="@style/GridButtonStyle" android:text="@string/day_1" />
+                <com.google.android.material.button.MaterialButton style="@style/GridButtonStyle" android:text="@string/day_2" />
+                <com.google.android.material.button.MaterialButton style="@style/GridButtonStyle" android:text="@string/day_3" />
+                <com.google.android.material.button.MaterialButton style="@style/GridButtonStyle" android:text="@string/day_4" />
+                <com.google.android.material.button.MaterialButton style="@style/GridButtonStyle" android:text="@string/day_5" />
+                <com.google.android.material.button.MaterialButton style="@style/GridButtonStyle" android:text="@string/day_6" />
+                <com.google.android.material.button.MaterialButton style="@style/GridButtonStyle" android:text="@string/day_7" />
+            </GridLayout>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tvTotalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/total_price_label"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/neon_mint"
+            android:layout_marginTop="24dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/gridContainer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnConfirmRent"
+            style="@style/NeonButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/btn_rent_confirm"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintTop_toBottomOf="@id/tvTotalPrice"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
