@@ -31,6 +31,31 @@ public class UserController {
                     "Tên đăng nhập đã tồn tại"
             );
         }
+        if(request.getUsername() == null ||
+                request.getUsername().trim().isEmpty())
+        {
+            return new RegisterResponse(
+                    false,
+                    "Tên đăng nhập không hợp lệ"
+            );
+        }
+
+        if(request.getUsername().length() < 4)
+        {
+            return new RegisterResponse(
+                    false,
+                    "Tên đăng nhập tối thiểu 4 ký tự"
+            );
+        }
+
+        if(request.getPassword() == null ||
+                request.getPassword().length() < 8)
+        {
+            return new RegisterResponse(
+                    false,
+                    "Mật khẩu tối thiểu 8 ký tự"
+            );
+        }
 
         User user = new User();
 

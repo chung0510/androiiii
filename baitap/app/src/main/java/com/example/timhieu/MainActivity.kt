@@ -56,7 +56,12 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     Toast.makeText(this@MainActivity, getString(R.string.login_success), Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this@MainActivity, UserActivity::class.java))
+                    
+                    if (username == "admin") {
+                        startActivity(Intent(this@MainActivity, AdminActivity::class.java))
+                    } else {
+                        startActivity(Intent(this@MainActivity, UserActivity::class.java))
+                    }
                     finish()
                 } else {
                     Toast.makeText(this@MainActivity, getString(R.string.login_failed), Toast.LENGTH_SHORT).show()

@@ -21,6 +21,7 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
 
         val edtUsername = findViewById<EditText>(R.id.edtRegisterUsername)
+        val edtEmail = findViewById<EditText>(R.id.edtRegisterEmail)
         val edtPassword = findViewById<EditText>(R.id.edtRegisterPassword)
         val edtConfirmPassword = findViewById<EditText>(R.id.edtRegisterConfirmPassword)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
@@ -28,21 +29,77 @@ class RegisterActivity : AppCompatActivity() {
         val tvBackToHome = findViewById<TextView>(R.id.tvRegisterBackToHome)
 
         btnRegister.setOnClickListener {
-            val username = edtUsername.text.toString().trim()
-            val password = edtPassword.text.toString().trim()
-            val confirmPassword = edtConfirmPassword.text.toString().trim()
 
-            if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Vui lòng nhập đầy đủ", Toast.LENGTH_SHORT).show()
+            val username =
+                edtUsername.text.toString().trim()
+
+            val email =
+                edtEmail.text.toString().trim()
+
+            val password =
+                edtPassword.text.toString().trim()
+
+            val confirmPassword =
+                edtConfirmPassword.text.toString().trim()
+
+            if (username.isEmpty()) {
+                edtUsername.error = "Nhập tên đăng nhập"
+                return@setOnClickListener
+            }
+
+            if (username.length < 4) {
+                edtUsername.error = "Tối thiểu 4 ký tự"
+                return@setOnClickListener
+            }
+
+            if (!username.matches(
+                    Regex("^[a-zA-Z0-9_]{4,20}$")
+                )
+            ) {
+                edtUsername.error =
+                    "Chỉ cho phép chữ, số và dấu _"
+
+                return@setOnClickListener
+            }
+
+            if (email.isEmpty()) {
+                edtEmail.error = "Nhập email"
+                return@setOnClickListener
+            }
+
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                edtEmail.error = "Email không hợp lệ"
+                return@setOnClickListener
+            }
+
+            if (password.length < 8) {
+
+                edtPassword.error =
+                    "Mật khẩu tối thiểu 8 ký tự"
+
+                return@setOnClickListener
+            }
+
+            if (!password.matches(
+                    Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$")
+                )
+            ) {
+
+                edtPassword.error =
+                    "Phải có chữ hoa, chữ thường và số"
+
                 return@setOnClickListener
             }
 
             if (password != confirmPassword) {
-                Toast.makeText(this, "Mật khẩu không khớp", Toast.LENGTH_SHORT).show()
+
+                edtConfirmPassword.error =
+                    "Mật khẩu không khớp"
+
                 return@setOnClickListener
             }
 
-            registerUser(username, password)
+            registerUser(username, email, password)
         }
 
         tvBackToLogin.setOnClickListener {
@@ -57,8 +114,8 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun registerUser(username: String, password: String) {
-        val request = RegisterRequest(username, password)
+    private fun registerUser(username: String, email: String, password: String) {
+        val request = RegisterRequest(username, password, email)
 
         RetrofitClient.api.register(request).enqueue(object : Callback<RegisterResponse> {
             override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {

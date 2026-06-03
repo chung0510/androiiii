@@ -136,95 +136,141 @@
 
         </FrameLayout>
 
-        <!-- Options Cards (Hour/Day) -->
-        <LinearLayout
-            android:id="@+id/layoutOptions"
+        <!-- Rent Options - Horizontal Scrolling -->
+        <HorizontalScrollView
+            android:id="@+id/scrollOptions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="24dp"
-            android:weightSum="2"
+            android:scrollbars="none"
             app:layout_constraintTop_toBottomOf="@id/spinnerSlotCard">
-            <FrameLayout
-                android:id="@+id/optionHour"
-                android:layout_width="0dp"
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/glass_background"
-                android:clickable="true"
-                android:focusable="true">
+                android:orientation="horizontal"
+                android:paddingVertical="4dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <!-- Hour Option -->
+                <FrameLayout
+                    android:id="@+id/optionHour"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="16dp">
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/glass_background"
+                    android:clickable="true"
+                    android:focusable="true">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/rent_by_hour"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_primary" />
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="16dp">
 
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/ic_locker"
-                        android:layout_marginVertical="8dp"
-                        app:tint="@color/neon_blue"
-                        android:contentDescription="@null" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/rent_by_hour"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/price_hour"
-                        android:textColor="@color/neon_mint" />
-                </LinearLayout>
-            </FrameLayout>
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_locker"
+                            android:layout_marginVertical="8dp"
+                            app:tint="@color/neon_blue"
+                            android:contentDescription="@null" />
 
-            <FrameLayout
-                android:id="@+id/optionDay"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/glass_background"
-                android:clickable="true"
-                android:focusable="true">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/price_hour"
+                            android:textColor="@color/neon_mint" />
+                    </LinearLayout>
+                </FrameLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <!-- Day Option -->
+                <FrameLayout
+                    android:id="@+id/optionDay"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="16dp">
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/glass_background"
+                    android:clickable="true"
+                    android:focusable="true">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/rent_by_day"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_primary" />
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="16dp">
 
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/ic_locker"
-                        android:layout_marginVertical="8dp"
-                        app:tint="@color/neon_blue"
-                        android:contentDescription="@null" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/rent_by_day"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_locker"
+                            android:layout_marginVertical="8dp"
+                            app:tint="@color/neon_blue"
+                            android:contentDescription="@null" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/price_day"
+                            android:textColor="@color/neon_mint" />
+                    </LinearLayout>
+                </FrameLayout>
+
+                <!-- Month Option -->
+                <FrameLayout
+                    android:id="@+id/optionMonth"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/glass_background"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/price_day"
-                        android:textColor="@color/neon_mint" />
-                </LinearLayout>
-            </FrameLayout>
-        </LinearLayout>
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/rent_by_month"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary" />
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_locker"
+                            android:layout_marginVertical="8dp"
+                            app:tint="@color/neon_blue"
+                            android:contentDescription="@null" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/price_month"
+                            android:textColor="@color/neon_mint" />
+                    </LinearLayout>
+                </FrameLayout>
+            </LinearLayout>
+        </HorizontalScrollView>
 
         <!-- Dynamic Grid for selection -->
         <FrameLayout
@@ -232,7 +278,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/layoutOptions">
+            app:layout_constraintTop_toBottomOf="@id/scrollOptions">
 
             <GridLayout
                 android:id="@+id/gridHours"
@@ -263,6 +309,17 @@
                 <com.google.android.material.button.MaterialButton style="@style/GridButtonStyle" android:text="@string/day_5" />
                 <com.google.android.material.button.MaterialButton style="@style/GridButtonStyle" android:text="@string/day_6" />
                 <com.google.android.material.button.MaterialButton style="@style/GridButtonStyle" android:text="@string/day_7" />
+            </GridLayout>
+
+            <GridLayout
+                android:id="@+id/gridMonths"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="4"
+                android:visibility="gone">
+                <com.google.android.material.button.MaterialButton style="@style/GridButtonStyle" android:text="@string/month_1" />
+                <com.google.android.material.button.MaterialButton style="@style/GridButtonStyle" android:text="@string/month_2" />
+                <com.google.android.material.button.MaterialButton style="@style/GridButtonStyle" android:text="@string/month_3" />
             </GridLayout>
         </FrameLayout>
 

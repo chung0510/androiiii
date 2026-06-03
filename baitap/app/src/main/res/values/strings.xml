@@ -12,6 +12,7 @@
     <string name="register_title">Đăng ký tài khoản</string>
     <string name="register">Đăng ký</string>
     <string name="confirm_password_hint">Xác nhận mật khẩu</string>
+    <string name="email_hint">Email</string>
     <string name="back_to_login">Đã có tài khoản? Đăng nhập ngay</string>
     <string name="landing_title">Ở ĐÂY LÀM MỘT CÁI GÌ ĐẤY</string>
     <string name="landing_subtitle">BACKGROUND HOA LÁ CÀNH BLABLA</string>
@@ -28,7 +29,7 @@
     <string name="rent_by_hour">thuê theo giờ</string>
     <string name="rent_by_day">thuê theo ngày</string>
     <string name="price_hour">30k/h</string>
-    <string name="price_day">150k/ng</string>
+    <string name="price_day">150k/ngày</string>
     <string name="btn_rent_confirm">thuê tủ</string>
     <string name="hour_1">1h</string>
     <string name="hour_2">2h</string>
@@ -46,6 +47,11 @@
     <string name="day_6">6 ngày</string>
     <string name="day_7">7 ngày</string>
     <string name="total_price_label">Tổng tiền: %sđ</string>
+    <string name="rent_by_month">thuê theo tháng</string>
+    <string name="price_month">500k/tháng</string>
+    <string name="month_1">1 tháng</string>
+    <string name="month_2">2 tháng</string>
+    <string name="month_3">3 tháng</string>
     <string name="back_desc">Quay lại</string>
     <string name="locker_icon_desc">Biểu tượng tủ</string>
     <string name="payment_title">THANH TOÁN</string>

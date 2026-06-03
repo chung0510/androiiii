@@ -55,6 +55,10 @@
             android:name=".OrderDetailActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".AdminActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAodzAAIiFVz3wlCnTgUVHUhElr3w3QowU" />

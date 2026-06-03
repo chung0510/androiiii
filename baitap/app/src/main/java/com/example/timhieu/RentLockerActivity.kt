@@ -20,8 +20,10 @@ class RentLockerActivity : AppCompatActivity() {
     private var currentLockerId = ""
     private var currentLockerAddress = ""
     private var isExtension = false
-    private val pricePerHour = 30000
-    private val pricePerDay = 150000
+    private var pricePerHour = 30000
+    private var pricePerDay = 150000
+    private var pricePerMonth = 500000
+    private var isRentByMonth = false
 
     @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,21 +85,37 @@ class RentLockerActivity : AppCompatActivity() {
 
         val optionDay =
             findViewById<FrameLayout>(R.id.optionDay)
+        val optionMonth =
+            findViewById<FrameLayout>(R.id.optionMonth)
 
         val gridHours = findViewById<GridLayout>(R.id.gridHours)
         val gridDays = findViewById<GridLayout>(R.id.gridDays)
+        val gridMonths = findViewById<GridLayout>(R.id.gridMonths)
 
         optionHour.setOnClickListener {
             isRentByHour = true
+            isRentByMonth = false
             gridHours.visibility = View.VISIBLE
             gridDays.visibility = View.GONE
+            gridMonths.visibility = View.GONE
             updatePrice(0, tvTotalPrice)
         }
 
         optionDay.setOnClickListener {
             isRentByHour = false
+            isRentByMonth = false
             gridHours.visibility = View.GONE
             gridDays.visibility = View.VISIBLE
+            gridMonths.visibility = View.GONE
+            updatePrice(0, tvTotalPrice)
+        }
+
+        optionMonth.setOnClickListener {
+            isRentByHour = false
+            isRentByMonth = true
+            gridHours.visibility = View.GONE
+            gridDays.visibility = View.GONE
+            gridMonths.visibility = View.VISIBLE
             updatePrice(0, tvTotalPrice)
         }
 
@@ -120,6 +138,18 @@ class RentLockerActivity : AppCompatActivity() {
                 child.setOnClickListener {
                     selectedDuration = child.text.toString().replace(" ngày", "").toInt()
                     totalPrice = selectedDuration * pricePerDay
+                    updatePrice(totalPrice, tvTotalPrice)
+                }
+            }
+        }
+
+        // Setup month selection
+        for (i in 0 until gridMonths.childCount) {
+            val child = gridMonths.getChildAt(i)
+            if (child is Button) {
+                child.setOnClickListener {
+                    selectedDuration = child.text.toString().replace(" tháng", "").toInt()
+                    totalPrice = selectedDuration * pricePerMonth
                     updatePrice(totalPrice, tvTotalPrice)
                 }
             }
