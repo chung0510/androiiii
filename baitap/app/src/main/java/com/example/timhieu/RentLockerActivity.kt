@@ -183,70 +183,53 @@ class RentLockerActivity : AppCompatActivity() {
                     ""
                 ) ?: ""
 
+            val rentType = when {
+                isRentByMonth -> "MONTH"
+                isRentByHour -> "HOUR"
+                else -> "DAY"
+            }
             val request =
                 CreateOrderRequest(
                     customerName = name,
                     phone = phone,
                     packageType = "SMALL",
-
                     userId = userId,
                     lockerId = currentLockerId,
                     address = currentLockerAddress,
-
                     duration = selectedDuration,
-
-                    rentType =
-                        if (isRentByHour)
-                            "HOUR"
-                        else
-                            "DAY"
+                    rentType = rentType
                 )
 
             // ===== GIA HẠN =====
 
             if (isExtension) {
-
-                RetrofitClient.api.extendOrder(
-
+                RetrofitClient.api.createExtendOrder(
                     orderId ?: "",
-
                     ExtendOrderRequest(
-
                         duration = selectedDuration,
-
-                        rentType =
-                            if (isRentByHour)
-                                "HOUR"
-                            else
-                                "DAY"
+                        rentType = rentType
                     )
-
                 ).enqueue(
-
-                    object : Callback<Order> {
-
+                    object :
+                        Callback<ExtendOrderResponse> {
                         override fun onResponse(
-                            call: Call<Order>,
-                            response: Response<Order>
+                            call: Call<ExtendOrderResponse>,
+                            response: Response<ExtendOrderResponse>
                         ) {
-
-                            if (response.isSuccessful) {
-
-                                Toast.makeText(
-                                    this@RentLockerActivity,
-                                    "Gia hạn thành công",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-
-                                finish()
+                            if(response.isSuccessful){
+                                val extend = response.body()
+                                val intent = Intent(this@RentLockerActivity, PaymentActivity::class.java)
+                                intent.putExtra("PAYMENT_CODE", extend?.paymentCode)
+                                intent.putExtra("TOTAL_PRICE", extend?.amount ?: 0)
+                                intent.putExtra("IS_EXTENSION", true)
+                                intent.putExtra("ORDER_ID", orderId)
+                                startActivity(intent)
                             }
                         }
-
                         override fun onFailure(
-                            call: Call<Order>,
+                            call: Call<ExtendOrderResponse>,
                             t: Throwable
                         ) {
-
                             Toast.makeText(
                                 this@RentLockerActivity,
                                 t.message,

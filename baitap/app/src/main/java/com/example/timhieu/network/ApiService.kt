@@ -51,9 +51,9 @@ interface ApiService {
         @Path("userId") userId: String
     ): Call<List<Order>>
 
-    @POST("api/extend-order/{id}")
-    fun extendOrder(
+    @POST("api/create-extend/{id}")
+    fun createExtendOrder(
         @Path("id") orderId: String,
         @Body request: ExtendOrderRequest
-    ): Call<Order>
+    ): Call<ExtendOrderResponse>
 }

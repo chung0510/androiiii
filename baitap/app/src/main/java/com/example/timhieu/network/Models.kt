@@ -82,3 +82,11 @@ data class ExtendOrderRequest(
     val duration: Int,
     val rentType: String
 )
+
+data class ExtendOrderResponse(
+    val id: String?,
+    val orderId: String?,
+    val paymentCode: String,
+    val amount: Int,
+    val paymentStatus: String?
+)

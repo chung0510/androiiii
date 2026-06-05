@@ -17,11 +17,13 @@ import retrofit2.Response
 import java.util.Locale
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.example.timhieu.network.User
 
 class PaymentActivity : AppCompatActivity() {
 
     private val handler = Handler(Looper.getMainLooper())
-    private var orderId: String? = null
+
+    private var paymentCode: String? = null
     private var isPaid = false
 
     private val checkStatusRunnable = object : Runnable {
@@ -38,14 +40,14 @@ class PaymentActivity : AppCompatActivity() {
         setContentView(R.layout.activity_payment)
 
         // Nhận PAYMENT_CODE hoặc ORDER_ID tùy theo luồng RentLocker truyền sang
-        orderId = intent.getStringExtra("PAYMENT_CODE") ?: intent.getStringExtra("ORDER_ID")
+        paymentCode = intent.getStringExtra("PAYMENT_CODE") ?: intent.getStringExtra("ORDER_ID")
         val tvPaymentCode = findViewById<TextView>(R.id.tvPaymentCode)
-        tvPaymentCode.text = "Nội dung CK: $orderId\n\n" + "Vui lòng nhập chính xác nội dung này khi chuyển khoản."
+        tvPaymentCode.text = "Nội dung CK: $paymentCode\n\n" + "Vui lòng nhập chính xác nội dung này khi chuyển khoản."
         val totalPrice = intent.getIntExtra("TOTAL_PRICE", 0)
 
         val imgQr = findViewById<ImageView>(R.id.imgQr)
 
-        val paymentCodeValue = orderId ?: ""
+        val paymentCodeValue = paymentCode ?: ""
 
         val qrUrl =
             "https://img.vietqr.io/image/" +
@@ -69,25 +71,55 @@ class PaymentActivity : AppCompatActivity() {
         val btnDone = findViewById<Button>(R.id.btnDonePayment)
         btnDone.isEnabled = false
         btnDone.text = "ĐANG CHỜ THANH TOÁN..."
+        val isExtension =
+            intent.getBooleanExtra(
+                "IS_EXTENSION",
+                false
+            )
 
         // Bắt đầu kiểm tra trạng thái tự động
-        if (orderId != null) {
+        if (paymentCode != null) {
             handler.post(checkStatusRunnable)
         }
     }
 
     private fun navigateToOrderDetail() {
-        val intent = Intent(this, OrderDetailActivity::class.java)
-        intent.putExtra("LOCKER_ID", getIntent().getStringExtra("LOCKER_ID"))
-        intent.putExtra("LOCKER_ADDRESS", getIntent().getStringExtra("LOCKER_ADDRESS"))
-        intent.putExtra("PAYMENT_CODE", orderId)
+        val isExtension = intent.getBooleanExtra("IS_EXTENSION", false)
+        if(isExtension){
+            val intent = Intent(this, UserActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+            finish()
+            return
+        }
+        val intent =
+            Intent(
+                this,
+                OrderDetailActivity::class.java
+            )
+        intent.putExtra(
+            "LOCKER_ID",
+            getIntent().getStringExtra(
+                "LOCKER_ID"
+            )
+        )
+        intent.putExtra(
+            "LOCKER_ADDRESS",
+            getIntent().getStringExtra(
+                "LOCKER_ADDRESS"
+            )
+        )
+        intent.putExtra(
+            "PAYMENT_CODE",
+            paymentCode
+        )
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
         finish()
     }
 
     private fun checkPaymentStatus() {
-        orderId?.let { id ->
+        paymentCode?.let { id ->
             RetrofitClient.api.checkPayment(id).enqueue(object : Callback<PaymentStatusResponse> {
                 override fun onResponse(call: Call<PaymentStatusResponse>, response: Response<PaymentStatusResponse>) {
                     if (response.isSuccessful) {
