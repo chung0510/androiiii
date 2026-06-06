@@ -3,33 +3,26 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- Neon Tech Color Palette -->
-    <color name="bg_dark">#121824</color>
-    <color name="neon_blue">#00F2FE</color>
-    <color name="neon_blue_glow">#4000F2FE</color>
-    <color name="neon_mint">#00E676</color>
-    <color name="neon_mint_glow">#4000E676</color>
+    <!-- Modern Minimalist Palette (Green Theme) -->
+    <color name="primary">#349A69</color>
+    <color name="primary_variant">#287D54</color>
+    <color name="on_primary">#FFFFFF</color>
 
-    <color name="glass_white">#1AFFFFFF</color>
-    <color name="glass_border">#33FFFFFF</color>
+    <color name="background">#FFFFFF</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_variant">#F8F9FA</color>
 
-    <!-- Mapping to existing names for compatibility where possible -->
-    <color name="primary">#00F2FE</color>
-    <color name="primary_dark">#00B8CB</color>
-    <color name="primary_light">#4D00F2FE</color>
-    <color name="accent">#00E676</color>
+    <color name="text_primary">#1A1C1E</color>
+    <color name="text_secondary">#6C757D</color>
+    <color name="text_hint">#ADB5BD</color>
 
-    <color name="background">#121824</color>
-    <color name="surface">#1AFFFFFF</color>
+    <color name="border">#E9ECEF</color>
+    <color name="error">#DC3545</color>
+    <color name="success">#349A69</color>
 
-    <color name="text_primary">#F8F9FA</color>
-    <color name="text_secondary">#B0B3B8</color>
-    <color name="text_hint">#707378</color>
-
-    <color name="border">#33FFFFFF</color>
-    <color name="error">#FF5252</color>
-    <color name="success">#00E676</color>
-
-    <color name="gray_light">#2A2F3A</color>
-    <color name="gray_medium">#707378</color>
+    <!-- Neutral colors -->
+    <color name="gray_100">#F8F9FA</color>
+    <color name="gray_200">#E9ECEF</color>
+    <color name="gray_300">#DEE2E6</color>
+    <color name="gray_700">#495057</color>
 </resources>

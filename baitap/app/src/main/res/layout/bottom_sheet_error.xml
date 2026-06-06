@@ -4,14 +4,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:orientation="vertical"
     android:padding="24dp">
+
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="24dp"
+        android:background="@color/gray_300" />
 
     <TextView
         android:id="@+id/txtSlotCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ngăn S01"
+        android:textColor="@color/text_primary"
         android:textSize="22sp"
         android:textStyle="bold"/>
 
@@ -19,29 +28,29 @@
         android:id="@+id/txtBadge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Bảo trì"
-        android:textColor="#B71C1C"
-        android:textStyle="bold" />
+        android:layout_marginTop="8dp"
+        android:text="Đang bảo trì"
+        android:textColor="@color/error"
+        android:textStyle="bold"
+        android:textSize="16sp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnRestart"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/bg_action_open"
+        android:layout_height="56dp"
+        android:layout_marginTop="32dp"
         android:text="Đưa vào hoạt động"
-        android:textColor="#FFFFFF"
-        app:backgroundTint="@null" />
+        android:textStyle="bold"
+        app:cornerRadius="12dp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnDelete"
+        style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="12dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="8dp"
         android:text="Xóa ngăn"
-        android:textColor="#8B2E2E"
-        android:background="@drawable/bg_action_disable"
-        app:backgroundTint="@null"/>
+        android:textColor="@color/error"
+        app:cornerRadius="12dp"/>
 
 </LinearLayout>
