@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Handle -->
+
+    <View
+        android:layout_width="70dp"
+        android:layout_height="6dp"
+        android:layout_gravity="center"
+        android:background="#E5E7EB" />
+
+    <!-- Tên ngăn -->
+
+    <TextView
+        android:id="@+id/txtSlotCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Ngăn A01"
+        android:textColor="#111827"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <!-- Badge trạng thái -->
+
+    <TextView
+        android:id="@+id/txtBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@android:color/transparent"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="6dp"
+        android:text="Đang sử dụng"
+        android:textColor="#295EA8"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <!-- Card khách thuê -->
+
+    <LinearLayout
+        android:id="@+id/layoutCustomer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="#F3F4F6"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Khách thuê"
+            android:textColor="#6B7280"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/txtCustomer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nguyễn Văn An"
+            android:textColor="#111827"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- Card thời gian -->
+
+    <LinearLayout
+        android:id="@+id/layoutRemaining"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="#F3F4F6"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Thời gian còn"
+            android:textColor="#6B7280"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/txtRemaining"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="48 phút"
+            android:textColor="#C27B18"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- Nút đơn thuê -->
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnOrder"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="12dp"
+        android:text="Xem đơn thuê"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/bg_action_open"
+        app:backgroundTint="@null"/>
+
+</LinearLayout>

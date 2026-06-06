@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- SEARCH + ADD -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginTop="15dp"
+        android:paddingHorizontal="18dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/edtSearch"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:hint="Tìm mã tủ/địa điểm..."
+            android:textSize="18sp"
+            android:textColor="#222222"
+            android:textColorHint="#8A8A8A"
+            android:paddingHorizontal="18dp"
+            android:background="@drawable/bg_search_box"
+            android:backgroundTint="@null"
+            android:singleLine="true"/>
+
+        <!-- ADD BUTTON -->
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="90dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="14dp"
+            android:text="Thêm"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:backgroundTint="@null"
+            android:background="@drawable/bg_green_button"/>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerLocker"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="18dp"
+        android:layout_marginTop="10dp"
+        android:clipToPadding="false"/>
+
+</LinearLayout>

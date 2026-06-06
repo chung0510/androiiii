@@ -15,9 +15,9 @@ class LockerAdapter(context: Context, private val lockers: List<Locker>) :
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_locker, parent, false)
         val locker = lockers[position]
 
-        val tvAddress = view.findViewById<TextView>(R.id.tvLockerAddress)
-        val tvId = view.findViewById<TextView>(R.id.tvLockerId)
-        val tvStatus = view.findViewById<TextView>(R.id.tvLockerStatus)
+        val tvAddress = view.findViewById<TextView>(R.id.txtLocation)
+        val tvId = view.findViewById<TextView>(R.id.txtLockerCode)
+        val tvStatus = view.findViewById<TextView>(R.id.txtStatus)
 
         tvAddress.text = context.getString(R.string.locker_address_label, locker.address)
         tvId.text = context.getString(R.string.locker_id_small_label, locker.lockerId)

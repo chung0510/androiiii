@@ -1,68 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="8dp">
 
-    <!-- Glassmorphism Container -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+
+    android:layout_height="wrap_content"
+
+    android:layout_marginBottom="14dp"
+
+    android:orientation="vertical"
+
+    android:padding="20dp"
+
+    android:background="@drawable/bg_white_card">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/glass_background"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:gravity="center_vertical">
 
-        <ImageView
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:src="@drawable/ic_locker"
-            android:contentDescription="Locker Icon"
-            app:tint="@color/neon_blue" />
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
+
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+
             android:layout_weight="1"
-            android:layout_marginStart="16dp">
+
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvLockerAddress"
+                android:id="@+id/txtLockerCode"
+
                 android:layout_width="wrap_content"
+
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_primary"
+
+                android:text="HP-01"
+
                 android:textStyle="bold"
-                android:textSize="16sp"
-                tools:text="TỦ Ở ĐỊA CHỈ: ...." />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+                android:textSize="22sp"
+
+                android:textColor="#111111"/>
+
+            <TextView
+                android:id="@+id/txtLocation"
+
+                android:layout_width="wrap_content"
+
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="4dp">
 
-                <TextView
-                    android:id="@+id/tvLockerId"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="13sp"
-                    tools:text="Mã tủ: abcdxyz" />
+                android:layout_marginTop="6dp"
 
-                <TextView
-                    android:id="@+id/tvLockerStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/neon_mint"
-                    android:textStyle="italic"
-                    android:textSize="13sp"
-                    tools:text="mới" />
-            </LinearLayout>
+                android:text="AEON Hải Phòng"
+
+                android:textSize="18sp"
+
+                android:textColor="#6A7485"/>
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtStatus"
+
+            android:layout_width="wrap_content"
+
+            android:layout_height="34dp"
+
+            android:paddingHorizontal="14dp"
+
+            android:gravity="center"
+
+            android:text="Online"
+
+            android:textStyle="bold"
+
+            android:textSize="15sp"
+
+            android:textColor="#355E12"
+
+            android:background="@drawable/bg_status_green"/>
     </LinearLayout>
-</FrameLayout>
+
+</LinearLayout>
