@@ -19,22 +19,20 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-
         val edtUsername = findViewById<EditText>(R.id.edtRegisterUsername)
-        val edtEmail = findViewById<EditText>(R.id.edtRegisterEmail)
+        val edtPhone = findViewById<EditText>(R.id.edtRegisterPhone)
         val edtPassword = findViewById<EditText>(R.id.edtRegisterPassword)
         val edtConfirmPassword = findViewById<EditText>(R.id.edtRegisterConfirmPassword)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
         val tvBackToLogin = findViewById<TextView>(R.id.tvBackToLogin)
-        val tvBackToHome = findViewById<TextView>(R.id.tvRegisterBackToHome)
 
         btnRegister.setOnClickListener {
 
             val username =
                 edtUsername.text.toString().trim()
 
-            val email =
-                edtEmail.text.toString().trim()
+            val phone =
+                edtPhone.text.toString().trim()
 
             val password =
                 edtPassword.text.toString().trim()
@@ -62,13 +60,16 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (email.isEmpty()) {
-                edtEmail.error = "Nhập email"
+            if (phone.isEmpty()) {
+                edtPhone.error = "Nhập số điện thoại"
                 return@setOnClickListener
             }
 
-            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                edtEmail.error = "Email không hợp lệ"
+            if(!phone.matches(Regex("^0\\d{9}$")))
+            {
+                edtPhone.error =
+                    "Số điện thoại không hợp lệ"
+
                 return@setOnClickListener
             }
 
@@ -99,23 +100,17 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            registerUser(username, email, password)
+            registerUser(username, phone, password)
         }
 
         tvBackToLogin.setOnClickListener {
             finish()
         }
 
-        tvBackToHome.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            startActivity(intent)
-            finish()
-        }
     }
 
-    private fun registerUser(username: String, email: String, password: String) {
-        val request = RegisterRequest(username, password, email)
+    private fun registerUser(username: String, phone: String, password: String) {
+        val request = RegisterRequest(username, password, phone)
 
         RetrofitClient.api.register(request).enqueue(object : Callback<RegisterResponse> {
             override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {

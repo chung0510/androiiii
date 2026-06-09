@@ -53,6 +53,8 @@ class MainActivity : AppCompatActivity() {
                     with(sharedPref.edit()) {
                         putString("USER_ID", loginResponse.userId)
                         putString("ROLE", loginResponse.role)
+                        putString("USERNAME", loginResponse.username)
+                        putString("PHONE", loginResponse.phone)
                         apply()
                     }
 

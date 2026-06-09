@@ -11,7 +11,7 @@ public class User {
 
     private String username;
     private String password;
-    private String email;
+    private String phone;
     private String role = "USER";
 
 
@@ -47,11 +47,11 @@ public class User {
         this.role = role;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPhone(String email) {
+        this.phone = email;
     }
 }

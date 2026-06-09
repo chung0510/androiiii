@@ -11,6 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
+import com.smartbox.backend.model.Locker;
+import com.smartbox.backend.repository.LockerRepository;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import java.util.Map;
 import java.util.Random;
@@ -24,6 +29,9 @@ public class OrderController {
     private OrderRepository orderRepository;
 
     @Autowired
+    private LockerRepository lockerRepository;
+
+    @Autowired
     private ExtendOrderRepository
             extendOrderRepository;
 
@@ -35,21 +43,43 @@ public class OrderController {
         order.setPaymentCode(generatePaymentCode());
         order.setLockerCode(generateLockerCode());
         order.setPaymentStatus("PENDING");
-        order.setStatus("ACTIVE");
-        LocalDateTime expireTime;switch(order.getRentType()){
-            case "HOUR":
-                expireTime = LocalDateTime.now().plusHours(order.getDuration());
-                break;
-            case "DAY":
-                expireTime = LocalDateTime.now().plusDays(order.getDuration());
-                break;
-            case "MONTH":
-                expireTime = LocalDateTime.now().plusMonths(order.getDuration());
-                break;
-            default:
-                expireTime = LocalDateTime.now().plusDays(order.getDuration());
+        order.setStatus("PENDING");
+        if("ONCE".equals(order.getRentType()))
+        {
+            order.setExpireAt(null);
         }
-        order.setExpireAt(expireTime.toString());
+        else
+        {
+            LocalDateTime expireTime;
+            switch(order.getRentType())
+            {
+                case "HOUR":
+                    expireTime = LocalDateTime.now().plusHours(order.getDuration());
+                    break;
+
+                case "DAY":
+                    expireTime = LocalDateTime.now().plusDays(order.getDuration());
+                    break;
+
+                case "MONTH":
+                    expireTime = LocalDateTime.now().plusMonths(order.getDuration());
+                    break;
+
+                default:
+                    expireTime = LocalDateTime.now().plusHours(1);
+            }
+            order.setExpireAt(expireTime.toString());
+        }
+        Locker locker = lockerRepository.findById(order.getLockerId()).orElse(null);
+        List<Order> sameSlotOrders = orderRepository.findByLockerIdAndSlotNumber(order.getLockerId(), order.getSlotNumber());
+        for(Order exist : sameSlotOrders)
+        {
+            if(!"CANCELLED".equals(exist.getStatus()) && !"COMPLETED".equals(exist.getStatus())) {
+                throw new RuntimeException("Ngăn này đã được thuê");
+            }
+        }
+        if (locker == null) {throw new RuntimeException("Locker not found");}
+        if (locker.getAvailableSlots() <= 0) {throw new RuntimeException("Locker is full");}
         return orderRepository.save(order);
     }
 
@@ -104,7 +134,14 @@ public class OrderController {
             if(order.getPaymentCode().equals(paymentCode))
             {
                 order.setPaymentStatus("PAID");
+                order.setStatus("ACTIVE");
                 orderRepository.save(order);
+                Locker locker = lockerRepository.findById(order.getLockerId()).orElse(null);
+                if(locker != null)
+                {
+                    locker.setAvailableSlots(locker.getAvailableSlots() - 1);
+                    lockerRepository.save(locker);
+                }
                 return "{\"status\":\"SUCCESS\"}";
             }
         }
@@ -127,6 +164,9 @@ public class OrderController {
                         case "MONTH":
                             expireTime = expireTime.plusMonths(extend.getDuration());
                             break;
+                        case "ONCE":
+                            expireTime = LocalDateTime.now().plusHours(1);
+                            break;
                     }
                     order.setExpireAt(expireTime.toString());
                     orderRepository.save(order);
@@ -147,7 +187,14 @@ public class OrderController {
             for (Order order : orders) {
                 if (rawData.contains(order.getPaymentCode())) {
                     order.setPaymentStatus("PAID");
+                    order.setStatus("ACTIVE");
                     orderRepository.save(order);
+                    Locker locker = lockerRepository.findById(order.getLockerId()).orElse(null);
+                    if(locker != null)
+                    {
+                        locker.setAvailableSlots(locker.getAvailableSlots() - 1);
+                        lockerRepository.save(locker);
+                    }
                     System.out.println("ORDER PAID: " + order.getPaymentCode());
                     break;
                 }
@@ -230,6 +277,47 @@ public class OrderController {
                 .toList();
     }
 
+    @GetMapping("/free-slots/{lockerId}")
+    public List<Integer> getFreeSlots(
+            @PathVariable String lockerId
+    )
+    {
+        Locker locker = lockerRepository.findById(lockerId).orElse(null);
+        if(locker == null)
+        {
+            return List.of();
+        }
+        List<Order> orders = orderRepository.findByLockerId(lockerId);
+        Set<Integer> usedSlots = new HashSet<>();
+        for(Order order : orders)
+        {
+            if(
+                    "PAID".equals(order.getPaymentStatus())
+                            &&
+                            "ACTIVE".equals(order.getStatus())
+            )
+            {
+                usedSlots.add(
+                        order.getSlotNumber()
+                );
+            }
+        }
+        List<Integer> freeSlots =
+                new ArrayList<>();
+        for(
+                int i = 1;
+                i <= locker.getTotalSlots();
+                i++
+        )
+        {
+            if(!usedSlots.contains(i))
+            {
+                freeSlots.add(i);
+            }
+        }
+        return freeSlots;
+    }
+
     @PostMapping("/create-extend/{id}")
     public ExtendOrder createExtendOrder(
             @PathVariable String id,
@@ -248,19 +336,58 @@ public class OrderController {
         int amount = 0;
         switch(request.getRentType()){
             case "HOUR":
-                amount = request.getDuration() * 30000;
+                amount = request.getDuration() * 10000;
                 break;
             case "DAY":
-                amount = request.getDuration() * 150000;
+                amount = request.getDuration() * 50000;
                 break;
             case "MONTH":
-                amount = request.getDuration() * 500000;
+                amount = request.getDuration() * 300000;
                 break;
         }
         extend.setAmount(amount);
-        return extendOrderRepository.save(
-                extend
-        );
+        return extendOrderRepository.save(extend);
     }
 
+    @PostMapping("/finish-order/{orderId}")
+    public Order finishOrder(@PathVariable String orderId)
+    {
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if(order == null)
+        {
+            throw new RuntimeException("Order not found");
+        }
+        if("COMPLETED".equals(order.getStatus()))
+        {
+            return order;
+        }
+        Locker locker = lockerRepository.findById(order.getLockerId()).orElse(null);
+        if(locker != null)
+        {
+            locker.setAvailableSlots(locker.getAvailableSlots() + 1);
+            lockerRepository.save(locker);
+        }
+        order.setStatus("COMPLETED");
+        return orderRepository.save(order);
+    }
+
+    @PostMapping("/cancel-order/{id}")
+    public Order cancelOrder(
+            @PathVariable String id
+    )
+    {
+        Order order =
+                orderRepository
+                        .findById(id)
+                        .orElse(null);
+
+        if(order == null)
+        {
+            return null;
+        }
+
+        order.setStatus("CANCELLED");
+        order.setCodeUsedCount(0);
+        return orderRepository.save(order);
+    }
 }

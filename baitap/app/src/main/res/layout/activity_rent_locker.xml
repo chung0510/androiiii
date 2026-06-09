@@ -75,34 +75,49 @@
                     android:inputType="phone" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Lựa chọn tủ"
-                android:textColor="@color/text_primary"
-                android:textSize="18sp"
-                android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:hint="Loại tủ"
+                android:hint="Thông tin tủ"
                 app:boxCornerRadiusTopStart="12dp"
                 app:boxCornerRadiusTopEnd="12dp"
                 app:boxCornerRadiusBottomStart="12dp"
                 app:boxCornerRadiusBottomEnd="12dp">
 
-                <AutoCompleteTextView
-                    android:id="@+id/spinnerType"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tvLockerInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none" />
+                    android:focusable="false"
+                    android:clickable="false"
+                    android:inputType="none"/>
+
             </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/tvCurrentSlot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Ngăn đang thuê: Ngăn 1"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/tvSlotTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Lựa chọn ngăn"
+                android:textColor="@color/text_primary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutSlot"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -132,35 +147,84 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal">
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/optionHour"
+                    android:id="@+id/optionOnce"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="4dp"
                     android:layout_weight="1"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="12dp"
-                    app:strokeColor="@color/primary"
-                    app:strokeWidth="1dp">
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/selector_card_stroke"
+                    app:strokeWidth="1.5dp"
+                    android:checkable="true"
+                    android:clickable="true"
+                    android:focusable="true">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="12dp">
+                        android:paddingVertical="12dp"
+                        android:paddingHorizontal="4dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/rent_once"
+                            android:textStyle="bold"
+                            android:textSize="13sp"
+                            android:gravity="center"
+                            android:textColor="@color/text_primary"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/price_once"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/optionHour"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/selector_card_stroke"
+                    app:strokeWidth="1.5dp"
+                    android:checkable="true"
+                    android:clickable="true"
+                    android:focusable="true">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingVertical="12dp"
+                        android:paddingHorizontal="4dp">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Theo Giờ"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold"
+                            android:textSize="13sp"
+                            android:gravity="center"
+                            android:textColor="@color/text_primary"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="10k/h"
-                            android:textColor="@color/primary"/>
+                            android:textSize="11sp"
+                            android:textColor="@color/text_secondary"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -170,24 +234,34 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="4dp"
                     android:layout_weight="1"
-                    app:cardBackgroundColor="@color/gray_100"
+                    app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="12dp"
-                    app:strokeWidth="0dp">
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/selector_card_stroke"
+                    app:strokeWidth="1.5dp"
+                    android:checkable="true"
+                    android:clickable="true"
+                    android:focusable="true">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="12dp">
+                        android:paddingVertical="12dp"
+                        android:paddingHorizontal="4dp">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Theo Ngày"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold"
+                            android:textSize="13sp"
+                            android:gravity="center"
+                            android:textColor="@color/text_primary"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="50k/n"
+                            android:textSize="11sp"
                             android:textColor="@color/text_secondary"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -196,26 +270,36 @@
                     android:id="@+id/optionMonth"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="4dp"
                     android:layout_weight="1"
-                    app:cardBackgroundColor="@color/gray_100"
+                    app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="12dp"
-                    app:strokeWidth="0dp">
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/selector_card_stroke"
+                    app:strokeWidth="1.5dp"
+                    android:checkable="true"
+                    android:clickable="true"
+                    android:focusable="true">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="12dp">
+                        android:paddingVertical="12dp"
+                        android:paddingHorizontal="4dp">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Theo Tháng"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold"
+                            android:textSize="13sp"
+                            android:gravity="center"
+                            android:textColor="@color/text_primary"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="300k/t"
+                            android:textSize="11sp"
                             android:textColor="@color/text_secondary"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -227,8 +311,43 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:columnCount="4"
-                android:visibility="visible">
-                <!-- Buttons will be styled in styles.xml or manually here -->
+                android:visibility="gone">
+                <com.google.android.material.button.MaterialButton style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_columnWeight="1" android:layout_margin="4dp" android:text="1h" android:insetTop="0dp" android:insetBottom="0dp"/>
+                <com.google.android.material.button.MaterialButton style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_columnWeight="1" android:layout_margin="4dp" android:text="2h" android:insetTop="0dp" android:insetBottom="0dp"/>
+                <com.google.android.material.button.MaterialButton style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_columnWeight="1" android:layout_margin="4dp" android:text="3h" android:insetTop="0dp" android:insetBottom="0dp"/>
+                <com.google.android.material.button.MaterialButton style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_columnWeight="1" android:layout_margin="4dp" android:text="4h" android:insetTop="0dp" android:insetBottom="0dp"/>
+                <com.google.android.material.button.MaterialButton style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_columnWeight="1" android:layout_margin="4dp" android:text="5h" android:insetTop="0dp" android:insetBottom="0dp"/>
+                <com.google.android.material.button.MaterialButton style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_columnWeight="1" android:layout_margin="4dp" android:text="6h" android:insetTop="0dp" android:insetBottom="0dp"/>
+                <com.google.android.material.button.MaterialButton style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_columnWeight="1" android:layout_margin="4dp" android:text="7h" android:insetTop="0dp" android:insetBottom="0dp"/>
+                <com.google.android.material.button.MaterialButton style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_columnWeight="1" android:layout_margin="4dp" android:text="8h" android:insetTop="0dp" android:insetBottom="0dp"/>
+            </GridLayout>
+            <GridLayout
+                android:id="@+id/gridDays"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:columnCount="2"
+                android:visibility="gone">
+                <com.google.android.material.button.MaterialButton style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_columnWeight="1" android:layout_margin="4dp" android:text="1 ngày"/>
+                <com.google.android.material.button.MaterialButton style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_columnWeight="1" android:layout_margin="4dp" android:text="2 ngày"/>
+                <com.google.android.material.button.MaterialButton style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_columnWeight="1" android:layout_margin="4dp" android:text="3 ngày"/>
+                <com.google.android.material.button.MaterialButton style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_columnWeight="1" android:layout_margin="4dp" android:text="4 ngày"/>
+                <com.google.android.material.button.MaterialButton style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_columnWeight="1" android:layout_margin="4dp" android:text="5 ngày"/>
+                <com.google.android.material.button.MaterialButton style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_columnWeight="1" android:layout_margin="4dp" android:text="6 ngày"/>
+                <com.google.android.material.button.MaterialButton style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_columnWeight="1" android:layout_margin="4dp" android:text="7 ngày"/>
+                <com.google.android.material.button.MaterialButton style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_columnWeight="1" android:layout_margin="4dp" android:text="8 ngày"/>
+            </GridLayout>
+            <GridLayout
+                android:id="@+id/gridMonths"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:columnCount="2"
+                android:visibility="gone">
+                <com.google.android.material.button.MaterialButton style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_columnWeight="1" android:layout_margin="4dp" android:text="1 tháng"/>
+                <com.google.android.material.button.MaterialButton style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_columnWeight="1" android:layout_margin="4dp" android:text="2 tháng"/>
+                <com.google.android.material.button.MaterialButton style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_columnWeight="1" android:layout_margin="4dp" android:text="3 tháng"/>
+                <com.google.android.material.button.MaterialButton style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_columnWeight="1" android:layout_margin="4dp" android:text="4 tháng"/>
             </GridLayout>
 
         </LinearLayout>

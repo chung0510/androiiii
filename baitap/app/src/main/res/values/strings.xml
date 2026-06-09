@@ -47,6 +47,8 @@
     <string name="day_6">6 ngày</string>
     <string name="day_7">7 ngày</string>
     <string name="total_price_label">Tổng tiền: %sđ</string>
+    <string name="rent_once">1 Lần</string>
+    <string name="price_once">15k</string>
     <string name="rent_by_month">thuê theo tháng</string>
     <string name="price_month">500k/tháng</string>
     <string name="month_1">1 tháng</string>
@@ -74,4 +76,5 @@
     <string name="connection_error">Lỗi kết nối: %s</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="back_button_text">QUAY LẠI</string>
 </resources>

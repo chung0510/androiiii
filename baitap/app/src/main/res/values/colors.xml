@@ -25,4 +25,12 @@
     <color name="gray_200">#E9ECEF</color>
     <color name="gray_300">#DEE2E6</color>
     <color name="gray_700">#495057</color>
+
+    <!-- Neon/Dark Theme Colors -->
+    <color name="neon_blue">#00F2FF</color>
+    <color name="neon_blue_glow">#4D00F2FF</color>
+    <color name="bg_dark">#0A0B10</color>
+    <color name="neon_mint">#00FFA3</color>
+    <color name="glass_border">#33FFFFFF</color>
+    <color name="glass_white">#1AFFFFFF</color>
 </resources>

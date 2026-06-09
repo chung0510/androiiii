@@ -18,9 +18,11 @@ public class Order {
     private String paymentStatus;
     private String userId;
     private String lockerId;
-    private String address;
+    private String lockerAddress;
+    private Integer slotNumber;
     private String status;
     private String expireAt;
     private Integer duration;
     private String rentType;
+    private Integer codeUsedCount;
 }

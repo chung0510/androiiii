@@ -10,7 +10,8 @@ import com.example.timhieu.network.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import android.widget.FrameLayout
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
 class RentLockerActivity : AppCompatActivity() {
 
@@ -20,10 +21,14 @@ class RentLockerActivity : AppCompatActivity() {
     private var currentLockerId = ""
     private var currentLockerAddress = ""
     private var isExtension = false
-    private var pricePerHour = 30000
-    private var pricePerDay = 150000
-    private var pricePerMonth = 500000
+    private var pricePerHour = 10000
+    private var pricePerDay = 50000
+    private var pricePerMonth = 300000
+    private var priceOnce = 15000
     private var isRentByMonth = false
+    private var isRentOnce = false
+    private lateinit var edtRenterName: TextInputEditText
+    private lateinit var edtPhone: TextInputEditText
 
     @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,88 +38,140 @@ class RentLockerActivity : AppCompatActivity() {
         currentLockerId = intent.getStringExtra("LOCKER_ID") ?: "L001"
         currentLockerAddress = intent.getStringExtra("LOCKER_ADDRESS") ?: ""
         isExtension = intent.getBooleanExtra("IS_EXTENSION", false)
+        val currentSlot = intent.getIntExtra("SLOT_NUMBER", 0)
 
         val tvTotalPrice = findViewById<TextView>(R.id.tvTotalPrice)
-        val edtRenterName = findViewById<EditText>(R.id.edtRenterName)
-        val edtPhone = findViewById<EditText>(R.id.edtPhone)
+        edtRenterName = findViewById(R.id.edtRenterName)
+        edtPhone = findViewById(R.id.edtPhone)
+        val sharedPref = getSharedPreferences("USER_DATA", MODE_PRIVATE)
+        val username = sharedPref.getString("USERNAME", "")
+        val phoneNumber = sharedPref.getString("PHONE", "")
+
+        edtRenterName.setText(username)
+        edtPhone.setText(phoneNumber)
+        edtRenterName.keyListener = null
+        edtPhone.keyListener = null
+
         val btnConfirm = findViewById<Button>(R.id.btnConfirmRent)
 
         val orderId = intent.getStringExtra("ORDER_ID")
         val customerName = intent.getStringExtra("CUSTOMER_NAME")
         val phone = intent.getStringExtra("PHONE")
 
-        if (isExtension) {
-            btnConfirm.text = "XÁC NHẬN GIA HẠN"
-            edtRenterName.setText(customerName)
-            edtPhone.setText(phone)
-            edtRenterName.isEnabled = false
-            edtPhone.isEnabled = false
-        }
+        val spinnerSlot = findViewById<AutoCompleteTextView>(R.id.spinnerSlot)
+        val tvSlotTitle = findViewById<TextView>(R.id.tvSlotTitle)
+        val slotLayout = findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.layoutSlot)
+        val tvLockerInfo = findViewById<TextInputEditText>(R.id.tvLockerInfo)
 
-        findViewById<ImageButton>(R.id.btnBack).setOnClickListener {
-            finish()
-        }
-
-        val spinnerType = findViewById<Spinner>(R.id.spinnerType)
-        val spinnerSlot = findViewById<Spinner>(R.id.spinnerSlot)
-        val availableSlots =
-            intent.getIntExtra(
-                "AVAILABLE_SLOTS",
-                0
-            )
-        val prefix = currentLockerId
-        val slotList = mutableListOf<String>()
-        for(i in 1..availableSlots)
-        {
-            slotList.add(prefix + i)
-        }
-        val slotAdapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_dropdown_item,
-            slotList
-        )
-        val types = arrayOf("trong chung cư", "ngoài chung cư")
-
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, types)
-        spinnerType.adapter = adapter
-        spinnerSlot.adapter = slotAdapter
-
-
-        val optionHour =
-            findViewById<FrameLayout>(R.id.optionHour)
-
-        val optionDay =
-            findViewById<FrameLayout>(R.id.optionDay)
-        val optionMonth =
-            findViewById<FrameLayout>(R.id.optionMonth)
+        val optionOnce = findViewById<com.google.android.material.card.MaterialCardView>(R.id.optionOnce)
+        val optionHour = findViewById<com.google.android.material.card.MaterialCardView>(R.id.optionHour)
+        val optionDay = findViewById<com.google.android.material.card.MaterialCardView>(R.id.optionDay)
+        val optionMonth = findViewById<com.google.android.material.card.MaterialCardView>(R.id.optionMonth)
 
         val gridHours = findViewById<GridLayout>(R.id.gridHours)
         val gridDays = findViewById<GridLayout>(R.id.gridDays)
         val gridMonths = findViewById<GridLayout>(R.id.gridMonths)
+        tvLockerInfo.setText("$currentLockerId - $currentLockerAddress")
+
+        if(!isExtension)
+        {
+            loadFreeSlots(spinnerSlot)
+        }
+
+
+        if (isExtension) {
+            val tvCurrentSlot = findViewById<TextView>(R.id.tvCurrentSlot)
+            tvCurrentSlot.visibility = View.VISIBLE
+            tvCurrentSlot.text = "Ngăn đang thuê: Ngăn $currentSlot"
+            slotLayout.visibility = View.GONE
+            tvSlotTitle.visibility = View.GONE
+            findViewById<TextInputLayout>(R.id.layoutSlot).visibility = View.GONE
+            btnConfirm.text = "XÁC NHẬN GIA HẠN"
+            edtRenterName.setText(customerName)
+            edtPhone.setText(phone)
+            edtRenterName.keyListener = null
+            edtPhone.keyListener = null
+        }
+        optionOnce.isEnabled = false
+        optionOnce.isClickable = false
+        optionOnce.alpha = 0.4f
+
+        val toolbar = findViewById<com.google.android.material.appbar.MaterialToolbar>(R.id.toolbarRent)
+
+        toolbar.setNavigationOnClickListener {
+            finish()
+        }
+
+        fun deselectButtons(grid: GridLayout) {
+            for (i in 0 until grid.childCount) {
+                val child = grid.getChildAt(i)
+                if (child is com.google.android.material.button.MaterialButton) {
+                    child.setBackgroundColor(getColor(android.R.color.transparent))
+                    child.setTextColor(getColor(R.color.primary))
+                    child.strokeColor = android.content.res.ColorStateList.valueOf(getColor(R.color.primary))
+                }
+            }
+        }
+
+        fun selectButton(button: com.google.android.material.button.MaterialButton) {
+            button.setBackgroundColor(getColor(R.color.primary))
+            button.setTextColor(getColor(R.color.white))
+            button.strokeColor = android.content.res.ColorStateList.valueOf(getColor(R.color.primary))
+        }
+
+        fun deselectAll() {
+            optionOnce.isChecked = false
+            optionHour.isChecked = false
+            optionDay.isChecked = false
+            optionMonth.isChecked = false
+            gridHours.visibility = View.GONE
+            gridDays.visibility = View.GONE
+            gridMonths.visibility = View.GONE
+            deselectButtons(gridHours)
+            deselectButtons(gridDays)
+            deselectButtons(gridMonths)
+            selectedDuration = 0
+            totalPrice = 0
+            updatePrice(0, tvTotalPrice)
+        }
+
+        optionOnce.setOnClickListener {
+            deselectAll()
+            optionOnce.isChecked = true
+            isRentOnce = true
+            isRentByHour = false
+            isRentByMonth = false
+            selectedDuration = 1
+            totalPrice = priceOnce
+            updatePrice(totalPrice, tvTotalPrice)
+        }
 
         optionHour.setOnClickListener {
+            deselectAll()
+            optionHour.isChecked = true
+            isRentOnce = false
             isRentByHour = true
             isRentByMonth = false
             gridHours.visibility = View.VISIBLE
-            gridDays.visibility = View.GONE
-            gridMonths.visibility = View.GONE
             updatePrice(0, tvTotalPrice)
         }
 
         optionDay.setOnClickListener {
+            deselectAll()
+            optionDay.isChecked = true
+            isRentOnce = false
             isRentByHour = false
             isRentByMonth = false
-            gridHours.visibility = View.GONE
             gridDays.visibility = View.VISIBLE
-            gridMonths.visibility = View.GONE
             updatePrice(0, tvTotalPrice)
         }
 
         optionMonth.setOnClickListener {
+            deselectAll()
+            optionMonth.isChecked = true
+            isRentOnce = false
             isRentByHour = false
             isRentByMonth = true
-            gridHours.visibility = View.GONE
-            gridDays.visibility = View.GONE
             gridMonths.visibility = View.VISIBLE
             updatePrice(0, tvTotalPrice)
         }
@@ -122,8 +179,10 @@ class RentLockerActivity : AppCompatActivity() {
         // Setup hour selection
         for (i in 0 until gridHours.childCount) {
             val child = gridHours.getChildAt(i)
-            if (child is Button) {
+            if (child is com.google.android.material.button.MaterialButton) {
                 child.setOnClickListener {
+                    deselectButtons(gridHours)
+                    selectButton(child)
                     selectedDuration = child.text.toString().replace("h", "").toInt()
                     totalPrice = selectedDuration * pricePerHour
                     updatePrice(totalPrice, tvTotalPrice)
@@ -134,8 +193,10 @@ class RentLockerActivity : AppCompatActivity() {
         // Setup day selection
         for (i in 0 until gridDays.childCount) {
             val child = gridDays.getChildAt(i)
-            if (child is Button) {
+            if (child is com.google.android.material.button.MaterialButton) {
                 child.setOnClickListener {
+                    deselectButtons(gridDays)
+                    selectButton(child)
                     selectedDuration = child.text.toString().replace(" ngày", "").toInt()
                     totalPrice = selectedDuration * pricePerDay
                     updatePrice(totalPrice, tvTotalPrice)
@@ -146,8 +207,10 @@ class RentLockerActivity : AppCompatActivity() {
         // Setup month selection
         for (i in 0 until gridMonths.childCount) {
             val child = gridMonths.getChildAt(i)
-            if (child is Button) {
+            if (child is com.google.android.material.button.MaterialButton) {
                 child.setOnClickListener {
+                    deselectButtons(gridMonths)
+                    selectButton(child)
                     selectedDuration = child.text.toString().replace(" tháng", "").toInt()
                     totalPrice = selectedDuration * pricePerMonth
                     updatePrice(totalPrice, tvTotalPrice)
@@ -184,10 +247,32 @@ class RentLockerActivity : AppCompatActivity() {
                 ) ?: ""
 
             val rentType = when {
+                isRentOnce -> "ONCE"
                 isRentByMonth -> "MONTH"
                 isRentByHour -> "HOUR"
                 else -> "DAY"
             }
+
+            var slotNumber = 0
+            if(!isExtension)
+            {
+                val selectedSlotText = spinnerSlot.text.toString()
+                slotNumber =
+                    selectedSlotText
+                        .replace("Ngăn ", "")
+                        .toIntOrNull() ?: 0
+
+                if(slotNumber == 0)
+                {
+                    Toast.makeText(
+                        this,
+                        "Vui lòng chọn ngăn",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+            }
+
             val request =
                 CreateOrderRequest(
                     customerName = name,
@@ -195,7 +280,8 @@ class RentLockerActivity : AppCompatActivity() {
                     packageType = "SMALL",
                     userId = userId,
                     lockerId = currentLockerId,
-                    address = currentLockerAddress,
+                    lockerAddress = currentLockerAddress,
+                    slotNumber = slotNumber,
                     duration = selectedDuration,
                     rentType = rentType
                 )
@@ -245,22 +331,15 @@ class RentLockerActivity : AppCompatActivity() {
             // ===== THUÊ MỚI =====
 
             RetrofitClient.api.createOrder(request)
-
                 .enqueue(
-
                     object :
                         Callback<CreateOrderResponse> {
-
                         override fun onResponse(
                             call: Call<CreateOrderResponse>,
                             response: Response<CreateOrderResponse>
                         ) {
-
                             if (response.isSuccessful) {
-
-                                val order =
-                                    response.body()
-
+                                val order = response.body()
                                 val intent =
                                     Intent(
                                         this@RentLockerActivity,
@@ -311,7 +390,35 @@ class RentLockerActivity : AppCompatActivity() {
                 )
         }
     }
-
+    private fun loadFreeSlots(spinnerSlot: AutoCompleteTextView)
+    {
+        RetrofitClient.api
+            .getFreeSlots(currentLockerId)
+            .enqueue(
+                object : Callback<List<Int>>
+                {
+                    override fun onResponse(call: Call<List<Int>>, response: Response<List<Int>>)
+                    {
+                        if(response.isSuccessful)
+                        {
+                            val slotList = response.body()?.map { "Ngăn $it" } ?: emptyList()
+                            val adapter =
+                                ArrayAdapter(
+                                    this@RentLockerActivity,
+                                    android.R.layout.simple_spinner_dropdown_item,
+                                    slotList
+                                )
+                            spinnerSlot.setAdapter(adapter)
+                        }
+                    }
+                    override fun onFailure(
+                        call: Call<List<Int>>,
+                        t: Throwable
+                    ) {
+                    }
+                }
+            )
+    }
     private fun updatePrice(price: Int, tv: TextView) {
         if (price > 0) {
             tv.visibility = View.VISIBLE

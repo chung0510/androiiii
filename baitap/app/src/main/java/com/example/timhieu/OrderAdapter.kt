@@ -44,10 +44,10 @@ class OrderAdapter(
             )
 
         text1.text =
-            order.address ?: "Không có địa chỉ"
+            order.lockerAddress ?: "Không có địa chỉ"
 
         text2.text =
-            "Mã tủ: ${order.lockerCode}"
+            "Tủ ${order.lockerId} • Ngăn ${order.slotNumber}"
 
         return view
     }

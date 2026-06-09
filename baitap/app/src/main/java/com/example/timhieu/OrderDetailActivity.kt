@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -16,6 +15,7 @@ import com.example.timhieu.R.id.btnExtendRent
 import com.example.timhieu.network.Order
 import com.example.timhieu.network.RetrofitClient
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import retrofit2.Call
@@ -44,15 +44,16 @@ class OrderDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_detail)
 
+        val orderId = intent.getStringExtra("ORDER_ID") ?: ""
         val lockerId = intent.getStringExtra("LOCKER_ID") ?: ""
-        val address = intent.getStringExtra("LOCKER_ADDRESS") ?: ""
 
         findViewById<TextView>(R.id.tvDetailLockerId).text = "Mã tủ: $lockerId"
-        findViewById<TextView>(R.id.tvDetailAddress).text = "Địa chỉ: $address"
         tvRemainingTime = findViewById(R.id.tvRemainingTime)
         ivQRCode = findViewById(R.id.ivQRCode)
 
-        findViewById<ImageButton>(R.id.btnBackDetail).setOnClickListener {
+        val toolbar = findViewById<com.google.android.material.appbar.MaterialToolbar>(R.id.toolbar)
+
+        toolbar.setNavigationOnClickListener {
             val intent = Intent(this, UserActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
@@ -77,13 +78,72 @@ class OrderDetailActivity : AppCompatActivity() {
                     intent.putExtra("CUSTOMER_NAME", order.customerName)
                     intent.putExtra("PHONE", order.phone)
                     intent.putExtra("LOCKER_ID", order.lockerId)
-                    intent.putExtra("LOCKER_ADDRESS", order.address)
+                    intent.putExtra("LOCKER_ADDRESS", order.lockerAddress)
+                    intent.putExtra("SLOT_NUMBER", order.slotNumber)
 
                     startActivity(intent)
                 }
             }
+        findViewById<MaterialButton>(R.id.btnFinishRent)
+            .setOnClickListener {
+                val order = currentOrder ?: return@setOnClickListener
+                MaterialAlertDialogBuilder(this)
+                    .setTitle("Kết thúc thuê")
+                    .setMessage(
+                        "Bạn có chắc muốn kết thúc thuê tủ này không?"
+                    )
+                    .setPositiveButton("Đồng ý") { _, _ ->
+                        RetrofitClient.api
+                            .finishOrder(order.id ?: "")
+                            .enqueue(
+                                object : Callback<Order> {
+                                    override fun onResponse(
+                                        call: Call<Order>,
+                                        response: Response<Order>
+                                    ) {
+                                        if(response.isSuccessful)
+                                        {
+                                            Toast.makeText(
+                                                this@OrderDetailActivity,
+                                                "Đã trả tủ thành công",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
 
-        fetchOrderDetails(lockerId)
+                                            val intent =
+                                                Intent(
+                                                    this@OrderDetailActivity,
+                                                    UserActivity::class.java
+                                                )
+                                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                            startActivity(intent)
+                                            finish()
+                                        }
+                                        else
+                                        {
+                                            Toast.makeText(
+                                                this@OrderDetailActivity,
+                                                "Không thể trả tủ",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                    }
+                                    override fun onFailure(
+                                        call: Call<Order>,
+                                        t: Throwable
+                                    ) {
+                                        Toast.makeText(
+                                            this@OrderDetailActivity,
+                                            t.message,
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+                                }
+                            )
+                    }
+                    .setNegativeButton("Hủy", null)
+                    .show()
+            }
+        fetchOrderDetails(orderId)
     }
 
     private fun generateQRCode(content: String) {
@@ -108,7 +168,7 @@ class OrderDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun fetchOrderDetails(lockerId: String) {
+    private fun fetchOrderDetails(orderId: String) {
         val sharedPref = getSharedPreferences("USER_DATA", MODE_PRIVATE)
         val userId = sharedPref.getString("USER_ID", "") ?: ""
 
@@ -116,9 +176,28 @@ class OrderDetailActivity : AppCompatActivity() {
             override fun onResponse(call: Call<List<Order>>, response: Response<List<Order>>) {
                 if (response.isSuccessful) {
                     val orders = response.body() ?: emptyList()
-                    val activeOrder = orders.find { it.lockerId == lockerId && it.status.equals("ACTIVE", ignoreCase = true) }
+                    val activeOrder = orders.find { it.id == orderId }
                     activeOrder?.let {
                         currentOrder = it
+                        findViewById<TextView>(R.id.tvDetailLockerId).text = "Mã tủ: ${it.lockerId}"
+                        findViewById<TextView>(R.id.tvDetailAddress).text = "Địa chỉ: ${it.lockerAddress}"
+                        findViewById<TextView>(R.id.tvSlotNumber).text = "Ngăn: ${it.slotNumber}"
+                        if(it.status == "COMPLETED")
+                        {
+                            val btnExtendRent = findViewById<MaterialButton>(R.id.btnExtendRent)
+                            val btnGetCode = findViewById<MaterialButton>(R.id.btnGetCode)
+                            val btnFinishRent = findViewById<MaterialButton>(R.id.btnFinishRent)
+                            btnExtendRent.isEnabled = false
+                            btnGetCode.isEnabled = false
+                            btnFinishRent.isEnabled = false
+                            btnExtendRent.alpha = 0.5f
+                            btnGetCode.alpha = 0.5f
+                            btnFinishRent.alpha = 0.5f
+                        }
+                        if(it.rentType == "ONCE")
+                        {
+                            findViewById<MaterialButton>(R.id.btnExtendRent).visibility = View.GONE
+                        }
                         try {
                             val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
                             sdf.timeZone = TimeZone.getDefault()
@@ -127,15 +206,20 @@ class OrderDetailActivity : AppCompatActivity() {
                                 "expireAt raw = ${it.expireAt}"
                             )
 
-                            expireTime = sdf.parse(
-                                it.expireAt?.substring(0, 19)
-                            )
+                            if(it.rentType == "ONCE")
+                            {
+                                tvRemainingTime.text = "Thuê theo lượt"
+                                tvRemainingTime.visibility = View.VISIBLE
+                            } else
+                            {
+                                expireTime = sdf.parse(it.expireAt?.substring(0,19))
+                                handler.post(updateTimeRunnable)
+                            }
 
                             android.util.Log.d(
                                 "TIME_DEBUG",
                                 "expireTime parsed = $expireTime"
                             )
-                            handler.post(updateTimeRunnable)
                         } catch (e: Exception) {
                             tvRemainingTime.text = "Lỗi định dạng thời gian"
                         }
@@ -145,6 +229,7 @@ class OrderDetailActivity : AppCompatActivity() {
                 } else {
                     tvRemainingTime.text = "Lỗi Server: ${response.code()}"
                 }
+
             }
             override fun onFailure(call: Call<List<Order>>, t: Throwable) {
                 tvRemainingTime.text = "Lỗi kết nối: ${t.message}"
@@ -183,7 +268,7 @@ class OrderDetailActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        val lockerId = intent.getStringExtra("LOCKER_ID") ?: ""
-        fetchOrderDetails(lockerId)
+        val orderId = intent.getStringExtra("ORDER_ID") ?: ""
+        fetchOrderDetails(orderId)
     }
 }

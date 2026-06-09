@@ -23,11 +23,6 @@ interface ApiService {
         @Body request: LoginRequest
     ): Call<LoginResponse>
 
-    @GET("api/user/{id}")
-    fun getUser(
-        @Path("id") id: String
-    ): Call<User>
-
     @GET("api/check-payment/{paymentCode}")
     fun checkPayment(
         @Path("paymentCode") paymentCode: String
@@ -56,4 +51,14 @@ interface ApiService {
         @Path("id") orderId: String,
         @Body request: ExtendOrderRequest
     ): Call<ExtendOrderResponse>
+
+    @POST("api/finish-order/{orderId}")
+    fun finishOrder(
+        @Path("orderId") orderId:String
+    ): Call<Order>
+
+    @GET("api/free-slots/{lockerId}")
+    fun getFreeSlots(
+        @Path("lockerId") lockerId: String
+    ): Call<List<Int>>
 }

@@ -20,9 +20,11 @@ data class Order(
     val paymentStatus: String?,
     val userId: String?,
     val lockerId: String?,
-    val address: String?,
+    val lockerAddress:String?,
+    val slotNumber:Int?,
     val status: String?,
-    val expireAt: String?
+    val expireAt: String?,
+    val rentType: String?
 )
 data class CreateOrderRequest(
     val customerName: String,
@@ -30,7 +32,8 @@ data class CreateOrderRequest(
     val packageType: String,
     val userId: String,
     val lockerId: String,
-    val address: String,
+    val lockerAddress:String,
+    val slotNumber:Int,
     val duration: Int,
     val rentType: String
 )
@@ -48,7 +51,7 @@ data class PaymentStatusResponse(
 data class RegisterRequest(
     val username: String,
     val password: String,
-    val email: String
+    val phone: String
 )
 
 data class LoginRequest(
@@ -60,7 +63,8 @@ data class LoginResponse(
     val success: Boolean,
     val userId: String?,
     val username: String?,
-    val role: String?
+    val role: String?,
+    val phone: String
 )
 data class User(
     val id: String?,

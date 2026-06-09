@@ -26,8 +26,6 @@ public class LockerGeneratorService {
 
     public List<Locker> generate(double userLat, double userLng) {
 
-        lockerRepository.deleteAll();
-
         List<Locker> lockers = new ArrayList<>();
 
         int maxAttempts = 2000;
@@ -94,7 +92,6 @@ public class LockerGeneratorService {
                             + " lockers"
             );
         }
-        lockerRepository.saveAll(lockers);
 
         return lockers;
     }

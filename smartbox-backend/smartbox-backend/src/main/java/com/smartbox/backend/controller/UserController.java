@@ -32,15 +32,16 @@ public class UserController {
             );
         }
 
-        User emailExist =
-                repository.findByEmail(
-                        request.getEmail()
+        User phoneExist =
+                repository.findByPhone(
+                        request.getPhone()
                 );
 
-        if(emailExist != null){
+        if(phoneExist != null)
+        {
             return new RegisterResponse(
                     false,
-                    "Email đã tồn tại"
+                    "Số điện thoại đã tồn tại"
             );
         }
 
@@ -60,12 +61,11 @@ public class UserController {
                     "Tên đăng nhập tối thiểu 4 ký tự"
             );
         }
-        if(request.getEmail() == null ||
-                request.getEmail().trim().isEmpty())
+        if(!request.getPhone().matches("^0\\d{9}$"))
         {
             return new RegisterResponse(
                     false,
-                    "Email không hợp lệ"
+                    "Số điện thoại không hợp lệ"
             );
         }
 
@@ -97,8 +97,8 @@ public class UserController {
         user.setPassword(
                 request.getPassword()
         );
-        user.setEmail(
-                request.getEmail()
+        user.setPhone(
+                request.getPhone()
         );
 
         user.setRole("USER");
@@ -125,6 +125,7 @@ public class UserController {
                     false,
                     null,
                     null,
+                    null,
                     null
             );
         }
@@ -136,6 +137,7 @@ public class UserController {
                     false,
                     null,
                     null,
+                    null,
                     null
             );
         }
@@ -144,7 +146,8 @@ public class UserController {
                 true,
                 user.getId(),
                 user.getUsername(),
-                user.getRole()
+                user.getRole(),
+                user.getPhone()
         );
     }
 

@@ -11,18 +11,27 @@ import com.example.timhieu.network.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.widget.TextView
 import com.example.timhieu.network.Order
 
 class UserActivity : AppCompatActivity() {
 
     private lateinit var lvRentedLockers: ListView
+    private lateinit var tvUserName: TextView
+    private lateinit var tvUserPhone: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user)
 
         lvRentedLockers = findViewById(R.id.lvRentedLockers)
+        tvUserName = findViewById(R.id.tvUserName)
+        tvUserPhone = findViewById(R.id.tvUserPhone)
 
+        val sharedPref = getSharedPreferences("USER_DATA", MODE_PRIVATE)
+
+        tvUserName.text = sharedPref.getString("USERNAME", "Người dùng")
+        tvUserPhone.text = sharedPref.getString("PHONE", "")
         lvRentedLockers.setOnItemClickListener { _, _, position, _ ->
             val order = lvRentedLockers.adapter
                     .getItem(position)
@@ -34,12 +43,16 @@ class UserActivity : AppCompatActivity() {
                         OrderDetailActivity::class.java
                     )
                 intent.putExtra(
+                    "ORDER_ID",
+                    it.id
+                )
+                intent.putExtra(
                     "LOCKER_ID",
                     it.lockerId
                 )
                 intent.putExtra(
                     "LOCKER_ADDRESS",
-                    it.address
+                    it.lockerAddress
                 )
                 intent.putExtra(
                     "LOCKER_CODE",

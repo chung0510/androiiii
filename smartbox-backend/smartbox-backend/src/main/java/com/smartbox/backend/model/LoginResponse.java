@@ -8,17 +8,20 @@ public class LoginResponse {
 
     private String username;
     private String role;
+    private String phone;
 
     public LoginResponse(
             boolean success,
             String userId,
             String username,
-            String role
+            String role,
+            String phone
     ) {
         this.success = success;
         this.userId = userId;
         this.username = username;
         this.role = role;
+        this.phone = phone;
     }
 
     public boolean isSuccess() {
@@ -35,5 +38,9 @@ public class LoginResponse {
 
     public String getRole() {
         return role;
+    }
+
+    public String getPhone() {
+        return phone;
     }
 }

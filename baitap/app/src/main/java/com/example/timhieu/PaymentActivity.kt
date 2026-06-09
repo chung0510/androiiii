@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +16,6 @@ import retrofit2.Response
 import java.util.Locale
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.example.timhieu.network.User
 
 class PaymentActivity : AppCompatActivity() {
 
@@ -60,7 +58,9 @@ class PaymentActivity : AppCompatActivity() {
             .load(qrUrl)
             .into(imgQr)
 
-        findViewById<ImageButton>(R.id.btnBackPayment).setOnClickListener {
+        val toolbar = findViewById<com.google.android.material.appbar.MaterialToolbar>(R.id.toolbarPayment)
+
+        toolbar.setNavigationOnClickListener {
             finish()
         }
 
@@ -71,11 +71,7 @@ class PaymentActivity : AppCompatActivity() {
         val btnDone = findViewById<Button>(R.id.btnDonePayment)
         btnDone.isEnabled = false
         btnDone.text = "ĐANG CHỜ THANH TOÁN..."
-        val isExtension =
-            intent.getBooleanExtra(
-                "IS_EXTENSION",
-                false
-            )
+
 
         // Bắt đầu kiểm tra trạng thái tự động
         if (paymentCode != null) {
@@ -86,8 +82,15 @@ class PaymentActivity : AppCompatActivity() {
     private fun navigateToOrderDetail() {
         val isExtension = intent.getBooleanExtra("IS_EXTENSION", false)
         if(isExtension){
-            val intent = Intent(this, UserActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            val intent =
+                Intent(
+                    this,
+                    OrderDetailActivity::class.java
+                )
+            intent.putExtra(
+                "ORDER_ID",
+                getIntent().getStringExtra("ORDER_ID")
+            )
             startActivity(intent)
             finish()
             return

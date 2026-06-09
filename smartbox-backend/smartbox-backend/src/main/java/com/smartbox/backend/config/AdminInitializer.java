@@ -25,7 +25,7 @@ public class AdminInitializer implements CommandLineRunner {
 
             user.setUsername("admin");
             user.setPassword("Admin123");
-            user.setEmail("admin@gmail.com");
+            user.setPhone("0000000000");
             user.setRole("ADMIN");
 
             repository.save(user);

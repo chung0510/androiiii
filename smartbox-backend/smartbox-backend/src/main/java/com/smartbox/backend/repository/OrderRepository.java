@@ -13,4 +13,11 @@ public interface OrderRepository
     List<Order> findByUserId(String userId);
 
     Order findByPaymentCode(String paymentCode);
+
+    List<Order> findByLockerId(String lockerId);
+
+    List<Order> findByLockerIdAndSlotNumber(
+            String lockerId,
+            Integer slotNumber
+    );
 }

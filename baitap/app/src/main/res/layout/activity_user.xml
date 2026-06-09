@@ -68,10 +68,10 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvUserEmail"
+                    android:id="@+id/tvUserPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="user@example.com"
+                    android:text="0000000000"
                     android:textColor="@color/text_secondary"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -87,19 +87,18 @@
 
             <!-- Using a FrameLayout to hold either the list or an empty state -->
             <FrameLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:minHeight="200dp">
 
                 <ListView
                     android:id="@+id/lvRentedLockers"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="346dp"
+                    android:layout_height="200dp"
                     android:divider="@android:color/transparent"
                     android:dividerHeight="12dp"
-                    android:nestedScrollingEnabled="true"
-                    tools:listitem="@layout/item_rented_locker" />
+                    android:nestedScrollingEnabled="true" />
 
                 <LinearLayout
                     android:id="@+id/emptyState"
@@ -109,11 +108,13 @@
                     android:orientation="vertical"
                     android:padding="32dp"
                     android:visibility="gone">
+
                     <ImageView
                         android:layout_width="64dp"
                         android:layout_height="64dp"
                         android:alpha="0.3"
                         android:src="@drawable/ic_locker" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
