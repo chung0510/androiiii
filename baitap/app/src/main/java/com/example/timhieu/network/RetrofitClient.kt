@@ -7,8 +7,6 @@ object RetrofitClient {
 
     private const val BASE_URL =
         "http://192.168.1.80:8080/"
-    //        "http://10.10.10.150:8080/"
-    //        "http://192.168.100.118:8080/"
 
     val api: ApiService by lazy {
         Retrofit.Builder()

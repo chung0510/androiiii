@@ -80,26 +80,17 @@ class PaymentActivity : AppCompatActivity() {
     }
 
     private fun navigateToOrderDetail() {
-        val isExtension = intent.getBooleanExtra("IS_EXTENSION", false)
-        if(isExtension){
-            val intent =
-                Intent(
-                    this,
-                    OrderDetailActivity::class.java
-                )
-            intent.putExtra(
-                "ORDER_ID",
-                getIntent().getStringExtra("ORDER_ID")
-            )
-            startActivity(intent)
-            finish()
-            return
-        }
         val intent =
             Intent(
                 this,
                 OrderDetailActivity::class.java
             )
+        intent.putExtra(
+            "ORDER_ID",
+            getIntent().getStringExtra(
+                "ORDER_ID"
+            )
+        )
         intent.putExtra(
             "LOCKER_ID",
             getIntent().getStringExtra(
@@ -116,7 +107,6 @@ class PaymentActivity : AppCompatActivity() {
             "PAYMENT_CODE",
             paymentCode
         )
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
         finish()
     }

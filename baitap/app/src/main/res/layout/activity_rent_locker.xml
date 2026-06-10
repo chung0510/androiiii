@@ -222,7 +222,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="10k/h"
+                            android:text="30k/h"
                             android:textSize="11sp"
                             android:textColor="@color/text_secondary"/>
                     </LinearLayout>
@@ -260,7 +260,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="50k/n"
+                            android:text="150k/n"
                             android:textSize="11sp"
                             android:textColor="@color/text_secondary"/>
                     </LinearLayout>
@@ -298,7 +298,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="300k/t"
+                            android:text="1tr/t"
                             android:textSize="11sp"
                             android:textColor="@color/text_secondary"/>
                     </LinearLayout>

@@ -1,0 +1,12 @@
+package com.smartbox.backend;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class SmartboxBackendApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+}

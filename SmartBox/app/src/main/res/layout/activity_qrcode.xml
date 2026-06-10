@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@android:color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- PAYMENT LAYOUT -->
+    <LinearLayout
+        android:id="@+id/layoutQR"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:padding="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imgQR"
+            android:src="@drawable/sepay_qr"
+            android:layout_width="260dp"
+            android:layout_height="260dp"/>
+
+        <TextView
+            android:text="Quét mã QR để thanh toán"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:text="Ngân hàng MB Bank"
+            android:textSize="16sp"
+            android:textColor="#444444"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:text="STK: 060205102004"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tvPaymentCode"
+            android:text="Nội dung CK"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="#D32F2F"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:text="Vui lòng chuyển đúng nội dung để hệ thống tự động xác nhận"
+            android:textSize="14sp"
+            android:textColor="#777777"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btnPaid"
+            android:text="GIẢ LẬP ĐÃ THANH TOÁN"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:backgroundTint="@color/green_main"
+            android:layout_marginTop="30dp"
+            android:layout_width="280dp"
+            android:layout_height="60dp"/>
+
+    </LinearLayout>
+
+    <!-- SUCCESS LAYOUT -->
+    <LinearLayout
+        android:id="@+id/layoutSuccess"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:padding="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imgSuccessQR"
+            android:src="@drawable/ic_launcher_foreground"
+            android:layout_width="220dp"
+            android:layout_height="220dp"/>
+
+        <TextView
+            android:id="@+id/tvSuccess"
+            android:text="Thanh toán thành công"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@color/green_main"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:text="Quét QR này để mở tủ"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tvSlot"
+            android:text="Ngăn được cấp: A1"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#1976D2"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tvLockerCode"
+            android:text="Mã mở tủ"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:layout_marginTop="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btnHome"
+            android:text="QUAY VỀ TRANG CHỦ"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:backgroundTint="@color/green_main"
+            android:layout_marginTop="35dp"
+            android:layout_width="280dp"
+            android:layout_height="60dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

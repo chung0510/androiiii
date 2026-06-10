@@ -21,9 +21,9 @@ class RentLockerActivity : AppCompatActivity() {
     private var currentLockerId = ""
     private var currentLockerAddress = ""
     private var isExtension = false
-    private var pricePerHour = 10000
-    private var pricePerDay = 50000
-    private var pricePerMonth = 300000
+    private var pricePerHour = 30000
+    private var pricePerDay = 150000
+    private var pricePerMonth = 1000000
     private var priceOnce = 15000
     private var isRentByMonth = false
     private var isRentOnce = false
@@ -53,6 +53,7 @@ class RentLockerActivity : AppCompatActivity() {
         edtPhone.keyListener = null
 
         val btnConfirm = findViewById<Button>(R.id.btnConfirmRent)
+
 
         val orderId = intent.getStringExtra("ORDER_ID")
         val customerName = intent.getStringExtra("CUSTOMER_NAME")
@@ -91,10 +92,10 @@ class RentLockerActivity : AppCompatActivity() {
             edtPhone.setText(phone)
             edtRenterName.keyListener = null
             edtPhone.keyListener = null
+            optionOnce.isEnabled = false
+            optionOnce.isClickable = false
+            optionOnce.alpha = 0.4f
         }
-        optionOnce.isEnabled = false
-        optionOnce.isClickable = false
-        optionOnce.alpha = 0.4f
 
         val toolbar = findViewById<com.google.android.material.appbar.MaterialToolbar>(R.id.toolbarRent)
 
@@ -306,6 +307,7 @@ class RentLockerActivity : AppCompatActivity() {
                                 val extend = response.body()
                                 val intent = Intent(this@RentLockerActivity, PaymentActivity::class.java)
                                 intent.putExtra("PAYMENT_CODE", extend?.paymentCode)
+                                intent.putExtra("ORDER_ID", orderId)
                                 intent.putExtra("TOTAL_PRICE", extend?.amount ?: 0)
                                 intent.putExtra("IS_EXTENSION", true)
                                 intent.putExtra("ORDER_ID", orderId)
@@ -349,6 +351,11 @@ class RentLockerActivity : AppCompatActivity() {
                                 intent.putExtra(
                                     "PAYMENT_CODE",
                                     order?.paymentCode
+                                )
+
+                                intent.putExtra(
+                                    "ORDER_ID",
+                                    order?.id
                                 )
 
                                 intent.putExtra(

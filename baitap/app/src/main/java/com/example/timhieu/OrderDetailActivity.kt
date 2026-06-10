@@ -169,72 +169,65 @@ class OrderDetailActivity : AppCompatActivity() {
     }
 
     private fun fetchOrderDetails(orderId: String) {
-        val sharedPref = getSharedPreferences("USER_DATA", MODE_PRIVATE)
-        val userId = sharedPref.getString("USER_ID", "") ?: ""
-
-        RetrofitClient.api.getUserOrders(userId).enqueue(object : Callback<List<Order>> {
-            override fun onResponse(call: Call<List<Order>>, response: Response<List<Order>>) {
-                if (response.isSuccessful) {
-                    val orders = response.body() ?: emptyList()
-                    val activeOrder = orders.find { it.id == orderId }
-                    activeOrder?.let {
-                        currentOrder = it
-                        findViewById<TextView>(R.id.tvDetailLockerId).text = "Mã tủ: ${it.lockerId}"
-                        findViewById<TextView>(R.id.tvDetailAddress).text = "Địa chỉ: ${it.lockerAddress}"
-                        findViewById<TextView>(R.id.tvSlotNumber).text = "Ngăn: ${it.slotNumber}"
-                        if(it.status == "COMPLETED")
-                        {
+        RetrofitClient.api
+            .getOrder(orderId)
+            .enqueue(object : Callback<Order> {
+                override fun onResponse(
+                    call: Call<Order>,
+                    response: Response<Order>
+                ) {
+                    if (
+                        response.isSuccessful &&
+                        response.body() != null
+                    ) {
+                        val order = response.body()!!
+                        currentOrder = order
+                        findViewById<TextView>(
+                            R.id.tvDetailLockerId
+                        ).text =
+                            "Mã tủ: ${order.lockerId}"
+                        findViewById<TextView>(
+                            R.id.tvDetailAddress
+                        ).text =
+                            "Địa chỉ: ${order.lockerAddress}"
+                        findViewById<TextView>(R.id.tvSlotNumber
+                        ).text =
+                            "Ngăn: ${order.slotNumber}"
+                        if(order.status == "COMPLETED"){
                             val btnExtendRent = findViewById<MaterialButton>(R.id.btnExtendRent)
                             val btnGetCode = findViewById<MaterialButton>(R.id.btnGetCode)
                             val btnFinishRent = findViewById<MaterialButton>(R.id.btnFinishRent)
                             btnExtendRent.isEnabled = false
                             btnGetCode.isEnabled = false
                             btnFinishRent.isEnabled = false
-                            btnExtendRent.alpha = 0.5f
-                            btnGetCode.alpha = 0.5f
-                            btnFinishRent.alpha = 0.5f
                         }
-                        if(it.rentType == "ONCE")
-                        {
+                        if(order.rentType == "ONCE" || order.rentType == "ONE_TIME"
+                        ){
                             findViewById<MaterialButton>(R.id.btnExtendRent).visibility = View.GONE
-                        }
-                        try {
-                            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
-                            sdf.timeZone = TimeZone.getDefault()
-                            android.util.Log.d(
-                                "TIME_DEBUG",
-                                "expireAt raw = ${it.expireAt}"
-                            )
-
-                            if(it.rentType == "ONCE")
-                            {
-                                tvRemainingTime.text = "Thuê theo lượt"
-                                tvRemainingTime.visibility = View.VISIBLE
-                            } else
-                            {
-                                expireTime = sdf.parse(it.expireAt?.substring(0,19))
+                            tvRemainingTime.text = "Thuê theo lượt"
+                        } else {
+                            try {
+                                val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
+                                expireTime = sdf.parse(order.expireAt?.substring(0,19))
                                 handler.post(updateTimeRunnable)
+                            } catch (e: Exception){
+                                tvRemainingTime.text = "Lỗi định dạng thời gian"
                             }
-
-                            android.util.Log.d(
-                                "TIME_DEBUG",
-                                "expireTime parsed = $expireTime"
-                            )
-                        } catch (e: Exception) {
-                            tvRemainingTime.text = "Lỗi định dạng thời gian"
                         }
-                    } ?: run {
+                    } else {
                         tvRemainingTime.text = "Không tìm thấy đơn hàng"
                     }
-                } else {
-                    tvRemainingTime.text = "Lỗi Server: ${response.code()}"
                 }
 
-            }
-            override fun onFailure(call: Call<List<Order>>, t: Throwable) {
-                tvRemainingTime.text = "Lỗi kết nối: ${t.message}"
-            }
-        })
+                override fun onFailure(
+                    call: Call<Order>,
+                    t: Throwable
+                ) {
+
+                    tvRemainingTime.text =
+                        "Lỗi kết nối: ${t.message}"
+                }
+            })
     }
 
     private fun updateRemainingTime() {

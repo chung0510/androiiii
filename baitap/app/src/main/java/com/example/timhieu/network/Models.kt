@@ -24,7 +24,9 @@ data class Order(
     val slotNumber:Int?,
     val status: String?,
     val expireAt: String?,
-    val rentType: String?
+    val rentType: String?,
+    val amount: Long?,
+    val duration: Int?
 )
 data class CreateOrderRequest(
     val customerName: String,
@@ -39,6 +41,7 @@ data class CreateOrderRequest(
 )
 
 data class CreateOrderResponse(
+    val id: String?,
     val paymentCode: String,
     val lockerCode: String,
     val paymentStatus: String
